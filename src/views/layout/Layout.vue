@@ -1,25 +1,33 @@
 <template>
 	<div class="app-wrapper">
-		<sidebar class="sidebar-container" :items="items"></sidebar>
+		<sidebar  :items="items"></sidebar>
 	</div>
 </template>
 
 <script>
 	import {Sidebar} from "./components";
-	
+
 	export default {
-		name:"Layout",
+		name: "Layout",
 		components:{
-			Sidebar
+      Sidebar
 		},
 		data(){
 			return {
-				items:[]
+				items:[{
+              name:"博客管理",
+              icon:"el-icon-edit",
+              childList:{
+                name:"博客管理",
+                url:"/blog/edit",
+                icon:"el-icon-reading"
+          }
+        }]
 			}
 		}
 	}
 </script>
 
 <style>
-	
+
 </style>
