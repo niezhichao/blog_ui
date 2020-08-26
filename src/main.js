@@ -6,7 +6,8 @@ import router from './router'
 import 'font-awesome/css/font-awesome.min.css'
 import './assets/theme/index.css'
 import Element from 'element-ui'
-
+import  'element-ui/lib/theme-chalk/index.css'
+import '@/styles/index.scss'
 Vue.config.productionTip = false
 
 Vue.use(Element);
