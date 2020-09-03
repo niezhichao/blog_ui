@@ -2,18 +2,19 @@
 	<div class="app-wrapper">
 		<sidebar class="sidebar-container" :items="items"></sidebar>
     <div class="main-container">
-
+      <navbar/>
     </div>
 	</div>
 </template>
 
 <script>
-	import {Sidebar} from "./components";
+	import {Sidebar,Navbar} from "./components";
 
 	export default {
 		name: "Layout",
 		components:{
-      Sidebar
+      Sidebar,
+      Navbar
 		},
 		data(){
 			return {
