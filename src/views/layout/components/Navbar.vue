@@ -1,17 +1,46 @@
 <template>
     <div class="dashboard-editor-container">
       <el-menu class = "navbar" mode = "horizontal">
-        <hamburger class="hamburger-container"/>
+        <!--首页 图标-->
+        <template>
+          <i class="el-icon-s-home" style="color: #304156;" ></i>
+          <span style="font-family: Hiragino Sans GB ">首页</span>
+        </template>
+
+        <div class="right-menu">
+          <!--<el-tooltip effect="dark" content="换肤" placement="bottom">
+            <theme-picker class="theme-switch right-menu-item"></theme-picker>
+          </el-tooltip>-->
+
+          <i class="el-icon-user-solid"></i>
+          <el-dropdown class="avatar-container" trigger="click">
+            <span class="el-dropdown-link">
+             121414
+              <i class="el-icon-arrow-down el-icon--right"></i>
+          </span>
+            <el-dropdown-menu slot="dropdown" class="user-dropdown">
+              <el-dropdown-item>
+                <span style="display:block;" >关于我</span>
+              </el-dropdown-item>
+              <el-dropdown-item divided>
+                <span style="display:block;" >更新日志</span>
+              </el-dropdown-item>
+              <el-dropdown-item divided>
+                <span style="display:block;" >退出</span>
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </div>
+
       </el-menu>
     </div>
 </template>
 
 <script>
-  import Hamburger from "@/components/Hamburger";
-
+  import ThemePicker from "@/components/ThemePicker";
     export default {
       components:{
-        Hamburger
+        ThemePicker
       }
     }
 </script>
@@ -33,6 +62,10 @@
     .errLog-container {
       display: inline-block;
       vertical-align: top;
+    }
+
+    i:hover{
+      cursor: pointer;
     }
     .right-menu {
       float: right;
