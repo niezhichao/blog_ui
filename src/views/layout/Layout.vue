@@ -3,16 +3,19 @@
 		<sidebar class="sidebar-container" :items="items"></sidebar>
     <div class="main-container">
       <navbar/>
+      <appmain/>
     </div>
 	</div>
 </template>
 
 <script>
-	import {Sidebar,Navbar} from "./components";
+	import {Sidebar,Navbar,AppMain} from "./components";
+  import appmain from "./components/AppMain";
 
 	export default {
 		name: "Layout",
 		components:{
+      appmain,
       Sidebar,
       Navbar
 		},

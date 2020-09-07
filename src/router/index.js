@@ -9,7 +9,13 @@ const routerConfig = [
   {
     path:'/',
     component: Layout,
-    name:"首页"
+    redirect: '/dashboard',
+    name: '首页',
+    children: [{
+      path: 'dashboard',
+      component: () => import('@/views/dashboard/index'),
+      meta: { title: '仪表盘', icon: 'dashboard' }
+    }]
   }
 ];
 
