@@ -5,6 +5,12 @@
              text-color="#bfcbd9"
              active-text-color="#409EFF"
     >
+      <router-link to="/">
+      <el-menu-item>
+          <i class="el-icon-s-home"></i>
+          <span slot="title">首页</span>
+      </el-menu-item>
+      </router-link>
       <sidebar-item :items="items"></sidebar-item>
     </el-menu>
     </el-scrollbar>
@@ -18,6 +24,9 @@
           items:{
             type: Array
           }
+      },
+      methods:{
+
       }
     }
 </script>

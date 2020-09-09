@@ -16,6 +16,15 @@ const routerConfig = [
       component: () => import('@/views/dashboard/index'),
       meta: { title: '仪表盘', icon: 'dashboard' }
     }]
+  },
+  {
+    path:"/blog",
+    component:Layout,
+    name: "发布文章",
+    children:[{
+      path:"add",
+      component: ()=> import('@/views/blog/blog')
+    }]
   }
 ];
 

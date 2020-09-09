@@ -3,8 +3,10 @@
       <el-menu class = "navbar" mode = "horizontal">
         <!--首页 图标-->
         <template>
-          <i class="el-icon-s-home" style="color: #304156;" ></i>
-          <span style="font-family: Hiragino Sans GB ">首页</span>
+          <router-link to="/">
+            <i class="el-icon-menu" style="color: #304156;" ></i>
+          </router-link>
+
         </template>
 
         <div class="right-menu">
@@ -64,7 +66,7 @@
       vertical-align: top;
     }
 
-    i:hover{
+    .el-icon-menu:hover{
       cursor: pointer;
     }
     .right-menu {

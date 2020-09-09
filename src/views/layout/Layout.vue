@@ -3,6 +3,7 @@
 		<sidebar class="sidebar-container" :items="items"></sidebar>
     <div class="main-container">
       <navbar/>
+      <tabsview/>
       <appmain/>
     </div>
 	</div>
@@ -11,25 +12,27 @@
 <script>
 	import {Sidebar,Navbar,AppMain} from "./components";
   import appmain from "./components/AppMain";
+  import tabsview from  "./components/TabsView"
 
 	export default {
 		name: "Layout",
 		components:{
       appmain,
       Sidebar,
-      Navbar
+      Navbar,
+      tabsview
 		},
 		data(){
 			return {
 				items:[{
-              name:"博客管理",
+              name:"发布文章",
               icon:"el-icon-edit",
-              childList:[{
-                name:"博客管理2",
-                url:"/blog/edit",
-                icon:"el-icon-reading"
+              url:"/blog/add"
+        },
+          {
+            name:"文章管理",
+            icon:"el-icon-document"
           }]
-        }]
 			}
 		}
 	}
