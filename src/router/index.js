@@ -23,7 +23,7 @@ const routerConfig = [
     name: "发布文章",
     children:[{
       path:"add",
-      component: ()=> import('@/views/blog/blog')
+      component: ()=> import('@/views/blog/blogCreated')
     }]
   }
 ];
