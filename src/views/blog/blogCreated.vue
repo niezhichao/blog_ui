@@ -19,7 +19,7 @@
           <el-col :span="10">
             <el-input>
               <template slot="prepend">
-                <span style="color:#606266 ">文章作者</span>
+                <span style="color:#606266">文章作者</span>
               </template>
             </el-input>
           </el-col>
