@@ -43,8 +43,8 @@
                 <span style="color: #1f2d3d">更多菜单</span>
               </el-button>
               <el-dropdown-menu slot="dropdown" size="medium" >
-                <template v-for="item in artTags">
-                  <el-dropdown-item command="item.value">{{item.label}}</el-dropdown-item>
+                <template v-for="(item,index) in artTags">
+                  <el-dropdown-item :command="index" >{{item.label}}</el-dropdown-item>
                 </template>
               </el-dropdown-menu>
             </el-dropdown>
@@ -57,13 +57,18 @@
             </el-input>
           </el-col>
         </el-row>
+        <CKEditor></CKEditor>
       </el-form>
     </div>
 </template>
 
 <script>
+  import CKEditor from "../../components/CKEditor";
     export default {
         name: "blogcreated",
+      components:{
+        CKEditor
+      },
       data(){
           return {
             options:[{
@@ -89,7 +94,9 @@
       },
       methods:{
         handleArtTag:function (command) {
-
+          var that = this;
+          var item = that.artTags[command];
+          that.artTag = item.label;
         }
       }
     }
