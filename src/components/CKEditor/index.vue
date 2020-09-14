@@ -1,6 +1,12 @@
 <template>
   <div class="app-container">
-    <textarea id="editor" rows="10" cols="80"></textarea>
+
+    <!-- 工具栏容器 -->
+    <div id="toolbar-container"></div>
+
+    <!-- 编辑器容器 -->
+    <div id="editor">
+    </div>
   </div>
 </template>
 
@@ -13,7 +19,7 @@
           }
         },
       mounted(){
-
+        this.initCKEditor();
       },
       methods:{
         initCKEditor() {
@@ -35,4 +41,8 @@
 
 <style scoped>
 
+  #editor{
+    background-color: white;
+    height: 245px
+  }
 </style>

@@ -1,10 +1,9 @@
 <template>
     <div class="blogCreatedWrapper">
-      <el-row>
+      <el-row class="col-style font-bg">
         <el-col :span="24">
-          <div class="col-style font-bg">
             <span style="display: inline-block; margin-top: 5px;margin-left: 50px;font-family: Arial;color: white ">文章发布|</span>
-          </div>
+            <i class="el-icon-close" style="margin-left: 1010px;color: white" @click="closeBlogAddPage()"></i>
         </el-col>
       </el-row>
       <el-form>
@@ -57,7 +56,15 @@
             </el-input>
           </el-col>
         </el-row>
-        <CKEditor></CKEditor>
+        <el-row>
+          <CKEditor></CKEditor>
+        </el-row>
+        <el-row>
+          <el-col :span="6" :offset="18">
+            <el-button>草稿</el-button>&nbsp;&nbsp;&nbsp;&nbsp;
+            <el-button type="success">发布</el-button>
+          </el-col>
+        </el-row>
       </el-form>
     </div>
 </template>
@@ -97,15 +104,21 @@
           var that = this;
           var item = that.artTags[command];
           that.artTag = item.label;
+          console.log(process.env)
+        },
+        closeBlogAddPage:function () {
+         //window.history.go(-1);
+         this.$router.go(-1);
         }
-      }
+      },
+
     }
 </script>
 
 <style scoped>
  .blogCreatedWrapper{
    margin-top: 20px;
-   height: 500px;
+   height: 570px;
    border-bottom: 1px solid #d9ecff;
    background-color: rgba(193,226,161,0.25);
    box-shadow: 5px 5px 3px 0 rgba(0, 0, 0, .12), 0 0 3px 0 rgba(0, 0, 0, .04);
@@ -119,6 +132,10 @@
     border-radius: 4px;
     min-height: 36px;
   }
+
+ .el-icon-close:hover{
+   cursor: pointer;
+ }
 
   .font-bg{
     background: #909399;
