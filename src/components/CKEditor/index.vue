@@ -25,7 +25,7 @@
         initCKEditor() {
           CKEditor.create(document.querySelector('#editor'), {
             ckfinder: {
-
+              uploadUrl: 'C:\\Users\\niezhichao\\Desktop\\temp'
             }
           }).then(editor => {
             const toolbarContainer = document.querySelector('#toolbar-container');

@@ -104,10 +104,8 @@
           var that = this;
           var item = that.artTags[command];
           that.artTag = item.label;
-          console.log(process.env)
         },
         closeBlogAddPage:function () {
-         //window.history.go(-1);
          this.$router.go(-1);
         }
       },
