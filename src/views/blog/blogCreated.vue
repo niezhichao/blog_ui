@@ -9,7 +9,7 @@
       <el-form>
         <el-row :gutter="20">
             <el-col :span="10">
-              <el-input>
+              <el-input v-model="artTitle">
                 <template slot="prepend">
                   <span style="color:#606266 ">文章标题</span>
                 </template>
@@ -82,6 +82,7 @@
               value:"1",
               label:"选项1"
             }],
+            artTitle:"",
             articleType:"",
             artTag:"",
             artTags:[{
