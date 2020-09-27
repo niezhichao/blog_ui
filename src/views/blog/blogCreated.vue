@@ -9,14 +9,14 @@
       <el-form>
         <el-row :gutter="20">
             <el-col :span="10">
-              <el-input v-model="artTitle">
+              <el-input v-model="bloInfo.artTitle">
                 <template slot="prepend">
                   <span style="color:#606266 ">文章标题</span>
                 </template>
               </el-input>
             </el-col>
           <el-col :span="10">
-            <el-input>
+            <el-input v-model="bloInfo.author">
               <template slot="prepend">
                 <span style="color:#606266">文章作者</span>
               </template>
@@ -25,7 +25,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="10">
-              <el-select  v-model="articleType" style="width: 150px"  placeholder="请选择文章分类">
+              <el-select  v-model="bloInfo.blogSortedId" style="width: 150px"  placeholder="请选择文章分类">
                 <el-option
                   v-for="item,index in options"
                   :key="index"
@@ -39,7 +39,7 @@
             <el-dropdown @command="handleArtTag">
               <el-button type="primary" style="background-color: rgba(145,157,198,0.49);border-color: rgba(145,157,198,0.49);">
                 <i class="el-icon-plus" style="color: #1f2d3d"></i>
-                <span style="color: #1f2d3d">更多菜单</span>
+                <span style="color: #1f2d3d">文章标签</span>
               </el-button>
               <el-dropdown-menu slot="dropdown" size="medium" >
                 <template v-for="(item,index) in artTags">
@@ -49,7 +49,7 @@
             </el-dropdown>
           </el-col>
           <el-col :span="10">
-            <el-input>
+            <el-input v-model="bloInfo.articlesQuoted">
               <template slot="prepend">
                 <span style="color:#606266 ">文章来源</span>
               </template>
@@ -57,12 +57,12 @@
           </el-col>
         </el-row>
         <el-row>
-          <CKEditor></CKEditor>
+          <CKEditor ref="ckeditor"></CKEditor>
         </el-row>
         <el-row>
           <el-col :span="6" :offset="18">
             <el-button>草稿</el-button>&nbsp;&nbsp;&nbsp;&nbsp;
-            <el-button type="success">发布</el-button>
+            <el-button type="success" @click="submitForm">发布</el-button>
           </el-col>
         </el-row>
       </el-form>
@@ -71,13 +71,22 @@
 
 <script>
   import CKEditor from "../../components/CKEditor";
-    export default {
+  import {addBlog} from "../../api/blog";
+  export default {
         name: "blogcreated",
       components:{
         CKEditor
       },
       data(){
           return {
+            bloInfo:{
+              title:"",
+              author:"",
+              blogSortedId:"",
+              tagId:"",
+              articlesQuoted:"",
+              content:""
+            },
             options:[{
               value:"1",
               label:"选项1"
@@ -108,9 +117,20 @@
         },
         closeBlogAddPage:function () {
          this.$router.go(-1);
+        },
+        submitForm: function () {
+          console.log(process.env)
+          this.bloInfo.content = this.$refs.ckeditor.getData();
+         addBlog(this.bloInfo).then(response => {
+            if (response.resCode == "00"){
+              this.$message({
+                type: "success",
+                message: response.resMsg
+              })
+            }
+          })
         }
-      },
-
+      }
     }
 </script>
 

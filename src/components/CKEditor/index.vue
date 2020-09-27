@@ -13,6 +13,7 @@
 <script>
   import CKEditor from '@ckeditor/ckeditor5-build-decoupled-document'
     export default {
+      props:[""],
         data(){
           return {
             editor: null
@@ -35,7 +36,11 @@
             console.error(error);
           });
 
-        }}
+        },
+        getData: function () {
+           return this.editor.getData();
+        }
+      }
     }
 </script>
 
