@@ -9,14 +9,14 @@
       <el-form>
         <el-row :gutter="20">
             <el-col :span="10">
-              <el-input v-model="bloInfo.artTitle">
+              <el-input v-model="blogInfo.title">
                 <template slot="prepend">
                   <span style="color:#606266 ">文章标题</span>
                 </template>
               </el-input>
             </el-col>
           <el-col :span="10">
-            <el-input v-model="bloInfo.author">
+            <el-input v-model="blogInfo.author">
               <template slot="prepend">
                 <span style="color:#606266">文章作者</span>
               </template>
@@ -25,7 +25,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="10">
-              <el-select  v-model="bloInfo.blogSortedId" style="width: 150px"  placeholder="请选择文章分类">
+              <el-select  v-model="blogInfo.blogSortedId" style="width: 150px"  placeholder="请选择文章分类">
                 <el-option
                   v-for="item,index in options"
                   :key="index"
@@ -49,7 +49,7 @@
             </el-dropdown>
           </el-col>
           <el-col :span="10">
-            <el-input v-model="bloInfo.articlesQuoted">
+            <el-input v-model="blogInfo.articlesQuoted">
               <template slot="prepend">
                 <span style="color:#606266 ">文章来源</span>
               </template>
@@ -79,7 +79,7 @@
       },
       data(){
           return {
-            bloInfo:{
+            blogInfo:{
               title:"",
               author:"",
               blogSortedId:"",
@@ -91,8 +91,6 @@
               value:"1",
               label:"选项1"
             }],
-            artTitle:"",
-            articleType:"",
             artTag:"",
             artTags:[{
               value:"1",
@@ -113,19 +111,19 @@
         handleArtTag:function (command) {
           var that = this;
           var item = that.artTags[command];
+          that.blogInfo.tagId = item.value;
           that.artTag = item.label;
         },
         closeBlogAddPage:function () {
          this.$router.go(-1);
         },
         submitForm: function () {
-          console.log(process.env)
-          this.bloInfo.content = this.$refs.ckeditor.getData();
-         addBlog(this.bloInfo).then(response => {
-            if (response.resCode == "00"){
+          this.blogInfo.content = this.$refs.ckeditor.getData();
+         addBlog(this.blogInfo).then(response => {
+            if (response.data.resCode == "00"){
               this.$message({
                 type: "success",
-                message: response.resMsg
+                message: response.data.resMsg
               })
             }
           })

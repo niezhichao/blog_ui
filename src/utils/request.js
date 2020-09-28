@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 const service = axios.create({
-  baseURL: ''
+  baseURL: '',
+  withCredentials: true
 });
 
 export default service
