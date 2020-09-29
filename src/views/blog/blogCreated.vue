@@ -27,10 +27,10 @@
           <el-col :span="10">
               <el-select  v-model="blogInfo.blogSortedId" style="width: 150px"  placeholder="请选择文章分类">
                 <el-option
-                  v-for="item,index in options"
+                  v-for="item,index in blogTypes"
                   :key="index"
-                  :label="item.label"
-                  :value="item.value"
+                  :label="item.typeName"
+                  :value="item.pid"
                 >
 
                 </el-option>
@@ -43,7 +43,7 @@
               </el-button>
               <el-dropdown-menu slot="dropdown" size="medium" >
                 <template v-for="(item,index) in artTags">
-                  <el-dropdown-item :command="index" >{{item.label}}</el-dropdown-item>
+                  <el-dropdown-item :command="index" >{{item.tagContent}}</el-dropdown-item>
                 </template>
               </el-dropdown-menu>
             </el-dropdown>
@@ -72,6 +72,9 @@
 <script>
   import CKEditor from "../../components/CKEditor";
   import {addBlog} from "../../api/blog";
+  import {getBlogTypeList} from "../../api/blogType";
+  import {getTagList} from "../../api/tag";
+
   export default {
         name: "blogcreated",
       components:{
@@ -87,32 +90,17 @@
               articlesQuoted:"",
               content:""
             },
-            options:[{
-              value:"1",
-              label:"选项1"
-            }],
+            blogTypes:[],
             artTag:"",
-            artTags:[{
-              value:"1",
-              label:"Java"
-            },
-              {
-                value:"2",
-                label:"Linux"
-              },
-              {
-                value:"3",
-                label:"后台"
-              }
-              ]
+            artTags:[]
           }
       },
       methods:{
         handleArtTag:function (command) {
           var that = this;
           var item = that.artTags[command];
-          that.blogInfo.tagId = item.value;
-          that.artTag = item.label;
+          that.blogInfo.tagId = item.pid;
+          that.artTag = item.tagContent;
         },
         closeBlogAddPage:function () {
          this.$router.go(-1);
@@ -128,6 +116,32 @@
             }
           })
         }
+      },
+      mounted() {
+
+          /*获取博客类型列表*/
+        getBlogTypeList().then(response =>{
+          if (response.data.resCode == "00") {
+            this.blogTypes = response.data.mapData.data;
+          }
+        }).catch(error =>{
+          this.$message({
+            type: "error",
+            message: error
+          });
+        });
+
+        /*获取标签列表*/
+        getTagList().then(response =>{
+          if (response.data.resCode == "00") {
+            this.artTags = response.data.mapData.data;
+          }
+        }).catch(error =>{
+          this.$message({
+            type: "error",
+            message: error
+          });
+        });
       }
     }
 </script>

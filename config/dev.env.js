@@ -6,5 +6,5 @@ module.exports = merge(prodEnv, {
   NODE_ENV: '"development"',
 
   //开发环境
-  GATEWAY_API: '"http://localhost:8898/"'
+  GATEWAY_API: '"http://localhost:8898/"',
 })
