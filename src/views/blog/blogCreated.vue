@@ -83,12 +83,13 @@
       data(){
           return {
             blogInfo:{
-              title:"",
-              author:"",
-              blogSortedId:"",
-              tagId:"",
-              articlesQuoted:"",
-              content:""
+              title: null,
+              author: null,
+              blogSortedId: null,
+              tagId: null,
+              articlesQuoted: null,
+              content: null,
+              ifPublish: null
             },
             blogTypes:[],
             artTag:"",
@@ -107,6 +108,7 @@
         },
         submitForm: function () {
           this.blogInfo.content = this.$refs.ckeditor.getData();
+          this.blogInfo;
          addBlog(this.blogInfo).then(response => {
             if (response.data.resCode == "00"){
               this.$message({
