@@ -9,9 +9,11 @@ import Element from 'element-ui'
 import  'element-ui/lib/theme-chalk/index.css'
 import '@/styles/index.scss'
 import '@/icons' // icon
+import commCodeUtils from './utils/commCodeUtils';
 Vue.config.productionTip = false
 
 Vue.use(Element);
+Vue.use(commCodeUtils);
 
 new Vue({
   el: '#app',

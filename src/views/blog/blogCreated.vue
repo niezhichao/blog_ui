@@ -61,8 +61,8 @@
         </el-row>
         <el-row>
           <el-col :span="6" :offset="18">
-            <el-button>草稿</el-button>&nbsp;&nbsp;&nbsp;&nbsp;
-            <el-button type="success" @click="submitForm">发布</el-button>
+            <el-button @click="draftArticle">草稿</el-button>&nbsp;&nbsp;&nbsp;&nbsp;
+            <el-button type="success" @click="publishArticle">发布</el-button>
           </el-col>
         </el-row>
       </el-form>
@@ -106,10 +106,22 @@
         closeBlogAddPage:function () {
          this.$router.go(-1);
         },
-        submitForm: function () {
+        publishArticle: function () {
           this.blogInfo.content = this.$refs.ckeditor.getData();
-          this.blogInfo;
+          this.blogInfo.ifPublish = this.$IfPublic.YES;
          addBlog(this.blogInfo).then(response => {
+            if (response.data.resCode == "00"){
+              this.$message({
+                type: "success",
+                message: response.data.resMsg
+              })
+            }
+          })
+        },
+        draftArticle:function () {
+          this.blogInfo.content = this.$refs.ckeditor.getData();
+          this.blogInfo.ifPublish = this.$IfPublic.NO;
+          addBlog(this.blogInfo).then(response => {
             if (response.data.resCode == "00"){
               this.$message({
                 type: "success",
