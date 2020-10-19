@@ -8,3 +8,8 @@ export function addBlog(param) {
     data: param
   })
 }
+
+
+function get(){
+  
+}
