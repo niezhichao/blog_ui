@@ -24,7 +24,11 @@ const routerConfig = [
     children:[{
       path:"add",
       component: ()=> import('@/views/blog/blogCreated')
-    }]
+    },
+      {
+        path:"mananger",
+        component: () => import('@/views/blog/blogManagement')
+      }]
   }
 ];
 

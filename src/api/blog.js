@@ -9,7 +9,3 @@ export function addBlog(param) {
   })
 }
 
-
-function get(){
-  
-}

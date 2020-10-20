@@ -31,7 +31,8 @@
         },
           {
             name:"文章管理",
-            icon:"el-icon-document"
+            icon:"el-icon-document",
+            url:"/blog/mananger"
           }]
 			}
 		}
