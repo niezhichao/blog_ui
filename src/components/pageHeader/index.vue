@@ -2,8 +2,8 @@
   <el-row class="col-style font-bg">
     <el-col :span="24">
       <span
-        style="display: inline-block; margin-top: 5px;margin-left: 50px;font-family: Arial;color: white ">文章发布|</span>
-      <i class="el-icon-close" style="margin-left: 1010px;color: white" @click="closePage()"></i>
+        style="display: inline-block; margin-top: 9px;margin-left: 50px;font-family: DFKai-SB;color: rgba(55,71,63,0.76) ">{{headerText}}</span>
+      <i class="el-icon-close" style="margin-left: 1010px;color: rgba(55,71,63,0.76)" @click="closePage()"></i>
     </el-col>
   </el-row>
 </template>
@@ -11,6 +11,13 @@
 <script>
   export default {
     name: "pageHeader",
+    props:["headerText"],
+    data(){
+          return{
+            header:""
+          }
+
+    },
     methods: {
       closePage: function () {
         this.$router.go(-1);
@@ -27,6 +34,10 @@
   }
 
   .font-bg {
-    background: #909399;
+    background: rgba(51,189,126,0.31);
+  }
+
+  .el-icon-close:hover{
+    cursor: pointer;
   }
 </style>
