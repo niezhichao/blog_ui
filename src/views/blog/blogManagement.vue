@@ -3,12 +3,21 @@
     <page-header :headerText="headerText"></page-header>
     <el-container>
       <el-header>
-        <el-row>
-          <el-col :span="12">
+        <el-row :gutter="3">
+          <el-col :span="9">
             <el-button type="primary"><i class="el-icon-plus"></i>新增</el-button>
             <el-button type="primary" plain><i class="el-icon-edit"></i>编辑</el-button>
             <el-button type="danger" plain><i class="el-icon-delete"></i>删除</el-button>
             <el-button><i class="el-icon-refresh"></i>刷新</el-button>
+          </el-col>
+          <el-col :span="4">
+            <el-input placeholder="请输入博客名" v-model="blogQuery.title" clearable></el-input>
+          </el-col>
+          <el-col :span="4">
+            <el-input placeholder="请输入博客分类" v-model="blogQuery.blogType" clearable></el-input>
+          </el-col>
+          <el-col :span="7">
+            <el-button type="primary" icon="el-icon-search">搜索</el-button>
           </el-col>
         </el-row>
         <el-row>
@@ -69,10 +78,14 @@
         blogInfos: [{
           title: "Vue+ElementUI+SpringCloud开发博客",
           author: "刘乐宝"
-        }]
+        }],
+        blogQuery:{
+          title:"",
+          blogType:""
+        }
       }
     },
-    methods: {}
+    methods:{}
   }
 </script>
 
