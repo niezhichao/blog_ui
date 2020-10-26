@@ -29,7 +29,7 @@
         </el-row>
       </el-header>
       <el-main>
-        <el-table :data="blogInfos" border height="350" style="width:100%" highlight-current-row>
+        <el-table :data="blogList" border height="350" style="width:100%" highlight-current-row>
           <el-table-column type="selection" width="50" fixed></el-table-column>
           <el-table-column type="index" width="50" label="序号" fixed></el-table-column>
           <el-table-column prop="title" show-overflow-tooltip fixed header-align="center" label="文章标题"
@@ -53,11 +53,12 @@
         <template>
           <div class="paginationBlock">
             <el-pagination
-              :current-page="1"
-              :page-sizes="[100, 200, 300, 400]"
-              :page-size="100"
+              @current-change="handleCurrentChange"
+              :current-page="currentPage"
+              :page-sizes="pageSizes"
+              :page-size="pageSize"
               layout="total, sizes, prev, pager, next, jumper"
-              :total="400"
+              :total="pageTotal"
             ></el-pagination>
           </div>
         </template>
@@ -68,6 +69,7 @@
 
 <script>
   import pageHeader from "../../components/pageHeader";
+  import {getBlogLst} from "../../api/blog"
 
   export default {
     name: "blogManagement",
@@ -75,17 +77,47 @@
     data() {
       return {
         headerText: "文章管理|",
-        blogInfos: [{
-          title: "Vue+ElementUI+SpringCloud开发博客",
-          author: "刘乐宝"
-        }],
+        blogList: [],
         blogQuery:{
           title:"",
-          blogType:""
-        }
+          blogSortedId:"",
+          pageSize: null,
+          pageNum: null
+        },
+        pageSizes:[10,20,50,100],
+        pageTotal:0,
+        pageSize:10,
+        currentPage:1
       }
     },
-    methods:{}
+    methods:{
+      getBlogList: function(){
+        this.blogQuery.pageSize = this.pageSize;
+        this.blogQuery.pageNum = this.currentPage;
+        getBlogLst(this.blogQuery).then(response =>{
+          console.log(response)
+          if (response.data.resCode == "00") {
+            this.blogList = response.data.mapData.data;
+            this.pageTotal = response.data.total;
+            this.pageSize = response.data.pageSize;
+            this.currentPage = response.data.pageNum;
+          }
+        }).catch(error =>{
+          this.$message({
+            type: "error",
+            message: error
+          });
+        });
+      },
+      handleCurrentChange: function (val) {
+        this.currentPage = val;
+        this.getBlogList();
+      }
+    },
+    created(){
+
+      this.getBlogList();
+    }
   }
 </script>
 

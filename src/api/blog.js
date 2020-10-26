@@ -9,3 +9,12 @@ export function addBlog(param) {
   })
 }
 
+export function getBlogLst(param) {
+
+  return request({
+    url: process.env.GATEWAY_API + 'admin-api/blog/list',
+    method: "post",
+    data: param
+  })
+}
+

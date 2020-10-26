@@ -135,8 +135,10 @@
 
           /*获取博客类型列表*/
         getBlogTypeList().then(response =>{
+
           if (response.data.resCode == "00") {
             this.blogTypes = response.data.mapData.data;
+            console.log(123);
           }
         }).catch(error =>{
           this.$message({
@@ -147,6 +149,7 @@
 
         /*获取标签列表*/
         getTagList().then(response =>{
+          console.log(response)
           if (response.data.resCode == "00") {
             this.artTags = response.data.mapData.data;
           }
