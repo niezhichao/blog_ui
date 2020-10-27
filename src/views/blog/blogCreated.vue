@@ -11,7 +11,7 @@
             <el-col :span="10">
               <el-input v-model="blogInfo.title">
                 <template slot="prepend">
-                  <span style="color:#606266 ">文章标题</span>
+                  <span style="color:#606266;" >文章标题</span>
                 </template>
               </el-input>
             </el-col>
@@ -138,7 +138,6 @@
 
           if (response.data.resCode == "00") {
             this.blogTypes = response.data.mapData.data;
-            console.log(123);
           }
         }).catch(error =>{
           this.$message({
@@ -149,7 +148,6 @@
 
         /*获取标签列表*/
         getTagList().then(response =>{
-          console.log(response)
           if (response.data.resCode == "00") {
             this.artTags = response.data.mapData.data;
           }
