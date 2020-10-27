@@ -35,9 +35,9 @@
           <el-table-column prop="title" show-overflow-tooltip fixed header-align="center" label="文章标题"
                            width="245"></el-table-column>
           <el-table-column prop="author" label="文章作者" width="100" header-align="center"></el-table-column>
-          <el-table-column prop="createTime" label="创建时间" width="100" header-align="center"></el-table-column>
-          <el-table-column prop="updateTime" label="最后编辑时间" width="150" header-align="center"></el-table-column>
-          <el-table-column prop="publicTime" label="发布时间" width="100" header-align="center"></el-table-column>
+          <el-table-column prop="createTime" show-overflow-tooltip label="创建时间" width="100" header-align="center"></el-table-column>
+          <el-table-column prop="updateTime" show-overflow-tooltip label="最后编辑时间" width="150" header-align="center"></el-table-column>
+          <el-table-column prop="publicTime" show-overflow-tooltip label="发布时间" width="100" header-align="center"></el-table-column>
           <el-table-column prop="blogSortedId" label="文章分类" width="100" header-align="center"></el-table-column>
           <el-table-column prop="ifPublish" label="是否发布" width="100" header-align="center"></el-table-column>
           <el-table-column label="操作" width="270" fixed="right" header-align="center">
@@ -54,6 +54,7 @@
           <div class="paginationBlock">
             <el-pagination
               @current-change="handleCurrentChange"
+              @size-change="handleSizeChange"
               :current-page="currentPage"
               :page-sizes="pageSizes"
               :page-size="pageSize"
@@ -95,7 +96,6 @@
         this.blogQuery.pageSize = this.pageSize;
         this.blogQuery.pageNum = this.currentPage;
         getBlogLst(this.blogQuery).then(response =>{
-          console.log(response)
           if (response.data.resCode == "00") {
             this.blogList = response.data.mapData.data;
             this.pageTotal = response.data.total;
@@ -111,6 +111,10 @@
       },
       handleCurrentChange: function (val) {
         this.currentPage = val;
+        this.getBlogList();
+      },
+      handleSizeChange:function (val) {
+        this.pageSize = val;
         this.getBlogList();
       }
     },

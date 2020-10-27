@@ -1,6 +1,10 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 
+const originalPush = Router.prototype.push;
+Router.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch(err => err)
+};
 Vue.use(Router)
 
 import Layout from '../views/layout/Layout';
@@ -20,7 +24,7 @@ const routerConfig = [
   {
     path:"/blog",
     component:Layout,
-    name: "发布文章",
+    name: "文章处理子菜单",
     children:[{
       path:"add",
       component: ()=> import('@/views/blog/blogCreated')
@@ -28,7 +32,20 @@ const routerConfig = [
       {
         path:"mananger",
         component: () => import('@/views/blog/blogManagement')
+      },
+      {
+        path:"swagger",
+        component: () => import('@/views/blog/blogManagement')
       }]
+  },
+  {
+    path:"/swagger",
+    component:Layout,
+    name: "接口管理子菜单",
+    children:[{
+      path:"adminApi",
+      component: ()=> import('@/views/swagger/adminApi')
+    }]
   }
 ];
 

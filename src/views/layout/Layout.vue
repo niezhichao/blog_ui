@@ -33,6 +33,15 @@
             name:"文章管理",
             icon:"el-icon-document",
             url:"/blog/mananger"
+          },
+          {
+            name:"接口管理",
+            icon:"el-icon-stopwatch",
+            childList:[{
+              name:"Admin模块接口",
+              icon:"el-icon-menu",
+              url:"/swagger/adminApi"
+            }]
           }]
 			}
 		}

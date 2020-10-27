@@ -7,4 +7,5 @@ module.exports = merge(prodEnv, {
 
   //开发环境
   GATEWAY_API: '"http://localhost:8898/"',
+  ADMIN_SWAGGER_URL: '"http://localhost:8090/"'
 })
