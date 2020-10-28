@@ -10,6 +10,7 @@
         name: "adminApi",
         data() {
           return {
+            //swagger UI界面URL
             adminSwaggerUrl: process.env.ADMIN_SWAGGER_URL + "swagger-ui.html"
           }
         },
