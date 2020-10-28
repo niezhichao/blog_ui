@@ -37,6 +37,14 @@ const routerConfig = [
         path:"swagger",
         component: () => import('@/views/blog/blogManagement')
       }]
+  },{
+    path:"/typeAndTags",
+    component:Layout,
+    name: "分类和标签",
+    children:[{
+      path:"manager",
+      component: ()=> import('@/views/typeAndTags')
+    }]
   },
   {
     path:"/swagger",

@@ -1,9 +1,11 @@
 <template>
   <el-row class="col-style font-bg">
-    <el-col :span="24">
+    <el-col :span="23">
       <span
         style="display: inline-block; margin-top: 9px;margin-left: 50px;font-family: DFKai-SB;color: rgba(55,71,63,0.76) ">{{headerText}}</span>
-      <i class="el-icon-close" style="margin-left: 1010px;color: rgba(55,71,63,0.76)" @click="closePage()"></i>
+    </el-col>
+    <el-col   :span="1">
+      <i class="el-icon-close" style="margin-top:9px;rgba(55,71,63,0.76)" @click="closePage()"></i>
     </el-col>
   </el-row>
 </template>

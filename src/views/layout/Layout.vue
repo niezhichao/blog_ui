@@ -33,6 +33,10 @@
             name:"文章管理",
             icon:"el-icon-document",
             url:"/blog/mananger"
+          },{
+            name:"分类/标签",
+            icon:"el-icon-price-tag",
+            url:"/typeAndTags/manager"
           },
           {
             name:"接口管理",
