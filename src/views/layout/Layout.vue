@@ -24,7 +24,13 @@
 		},
 		data(){
 			return {
-				items:[{
+				items:[
+          {
+            name:"首页",
+            icon:"el-icon-s-home",
+            url:"/dashboard"
+          },
+				  {
               name:"发布文章",
               icon:"el-icon-edit",
               url:"/blog/add"

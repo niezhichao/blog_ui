@@ -9,6 +9,7 @@ import Element from 'element-ui'
 import  'element-ui/lib/theme-chalk/index.css'
 import '@/styles/index.scss'
 import '@/icons' // icon
+import store from './store'
 import commCodeUtils from './utils/commCodeUtils';
 Vue.config.productionTip = false
 
@@ -17,6 +18,7 @@ Vue.use(commCodeUtils);
 
 new Vue({
   el: '#app',
+  store,
   router,
   render: h => h(App)
 })

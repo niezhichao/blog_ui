@@ -13,6 +13,9 @@
           return {
             headerText: "分类/标签|"
           }
+      },
+      methods:{
+
       }
     }
 </script>

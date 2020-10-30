@@ -1,5 +1,7 @@
 const getters = {
-  sidebar: state => state.app.sidebar,
-  avatar: state => state.user.avatar
+  visitedTagViews: function (state) {
+      return state.tagsView.visitedTagViews;
+  },
+  breadCrumbMarks: state=> state.tagsView.visitedTagViews
 }
 export default getters

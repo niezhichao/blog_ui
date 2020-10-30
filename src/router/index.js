@@ -27,22 +27,21 @@ const routerConfig = [
     name: "文章处理子菜单",
     children:[{
       path:"add",
+      name:"文章发布",
       component: ()=> import('@/views/blog/blogCreated')
     },
       {
         path:"mananger",
-        component: () => import('@/views/blog/blogManagement')
-      },
-      {
-        path:"swagger",
+        name:"文章管理",
         component: () => import('@/views/blog/blogManagement')
       }]
   },{
     path:"/typeAndTags",
     component:Layout,
-    name: "分类和标签",
+    name: "分类和标签菜单",
     children:[{
       path:"manager",
+      name:"分类和标签",
       component: ()=> import('@/views/typeAndTags')
     }]
   },
@@ -52,6 +51,7 @@ const routerConfig = [
     name: "接口管理子菜单",
     children:[{
       path:"adminApi",
+      name:"Admin模块接口",
       component: ()=> import('@/views/swagger/adminApi')
     }]
   }

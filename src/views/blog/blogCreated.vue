@@ -1,11 +1,6 @@
 <template>
     <div class="blogCreatedWrapper">
-      <el-row class="col-style font-bg">
-        <el-col :span="24">
-            <span style="display: inline-block; margin-top: 5px;margin-left: 50px;font-family: Arial;color: white ">文章发布|</span>
-            <i class="el-icon-close" style="margin-left: 1010px;color: white" @click="closeBlogAddPage()"></i>
-        </el-col>
-      </el-row>
+          <page-header :headerText="headerText"></page-header>
       <el-form>
         <el-row :gutter="20">
             <el-col :span="10">
@@ -74,14 +69,16 @@
   import {addBlog} from "../../api/blog";
   import {getBlogTypeList} from "../../api/blogType";
   import {getTagList} from "../../api/tag";
-
+  import pageHeader from "../../components/pageHeader";
   export default {
         name: "blogcreated",
       components:{
-        CKEditor
+        CKEditor,
+        pageHeader
       },
       data(){
           return {
+            headerText: "文章发布|",
             blogInfo:{
               title: null,
               author: null,
