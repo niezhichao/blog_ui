@@ -1,8 +1,8 @@
 <template>
-  <el-row class="col-style font-bg">
+  <el-row class="col-style font-bg-bk">
     <el-col :span="23">
       <span
-        style="display: inline-block; margin-top: 9px;margin-left: 50px;font-family: DFKai-SB;color: rgba(55,71,63,0.76) ">{{headerText}}</span>
+        style="display:inline-block; margin-top: 9px;margin-left: 50px;font-family: DFKai-SB; ">{{headerText}}</span>
     </el-col>
     <el-col   :span="1">
       <i class="el-icon-close" style="margin-top:9px;margin-left: 24px;rgba(55,71,63,0.76)" @click="closePage()"></i>
@@ -49,7 +49,7 @@
     min-height: 36px;
   }
 
-  .font-bg {
+  .font-bg-bk {
     background: rgba(51,189,126,0.31);
   }
  .el-icon-close{

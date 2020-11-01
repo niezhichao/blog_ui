@@ -20,7 +20,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="10">
-              <el-select  v-model="blogInfo.blogSortedId" style="width: 150px"  placeholder="请选择文章分类">
+              <el-select size="small" v-model="blogInfo.blogSortedId" style="width: 150px"  placeholder="请选择文章分类">
                 <el-option
                   v-for="item,index in blogTypes"
                   :key="index"
@@ -30,11 +30,19 @@
 
                 </el-option>
               </el-select>
-              <el-input :value="artTag" :readonly="true" class="artTagsInput" style="width: 100px"></el-input>
+
+            <el-tag
+              v-for="(item,index) in blogInfo.tags"
+            :key="item.pid"
+              closable
+              @close="handleTagClose"
+            >
+              {{item.tagContent}}
+            </el-tag>
             <el-dropdown @command="handleArtTag">
-              <el-button type="primary" style="background-color: rgba(145,157,198,0.49);border-color: rgba(145,157,198,0.49);">
+              <el-button round size="small"  style="border-color: rgba(145,157,198,0.49);">
                 <i class="el-icon-plus" style="color: #1f2d3d"></i>
-                <span style="color: #1f2d3d">文章标签</span>
+                <span>文章标签</span>
               </el-button>
               <el-dropdown-menu slot="dropdown" size="medium" >
                 <template v-for="(item,index) in artTags">
@@ -83,25 +91,35 @@
               title: null,
               author: null,
               blogSortedId: null,
-              tagId: null,
+              tags: [],
               articlesQuoted: null,
               content: null,
               ifPublish: null
             },
             blogTypes:[],
             artTag:"",
-            artTags:[]
+            artTags:[{
+              tagContent:"linux",
+              pid:"123"
+            },
+              {
+                tagContent:"java",
+                pid:"124"
+              }]
           }
       },
       methods:{
         handleArtTag:function (command) {
           var that = this;
           var item = that.artTags[command];
-          that.blogInfo.tagId = item.pid;
-          that.artTag = item.tagContent;
+          var tagsArr = that.blogInfo.tags;
+          if (tagsArr.some(val=> val.pid == item.pid))return //重复选择的标签 不新增
+          that.blogInfo.tags.push(item);
         },
-        closeBlogAddPage:function () {
-         this.$router.go(-1);
+        handleTagClose:function(tag){
+         let tags = this.blogInfo.tags;
+          tags.splice(tags.indexOf(tag),1);
+          console.log(this.blogInfo.tags)
         },
         publishArticle: function () {
           this.blogInfo.content = this.$refs.ckeditor.getData();
@@ -131,7 +149,7 @@
       mounted() {
 
           /*获取博客类型列表*/
-        getBlogTypeList().then(response =>{
+        /*getBlogTypeList().then(response =>{
 
           if (response.data.resCode == "00") {
             this.blogTypes = response.data.mapData.data;
@@ -143,7 +161,7 @@
           });
         });
 
-        /*获取标签列表*/
+        /!*获取标签列表*!/
         getTagList().then(response =>{
           if (response.data.resCode == "00") {
             this.artTags = response.data.mapData.data;
@@ -153,7 +171,7 @@
             type: "error",
             message: error
           });
-        });
+        });*/
       }
     }
 </script>
@@ -183,4 +201,8 @@
   .font-bg{
     background: #909399;
   }
+
+ .el-tag {
+   margin-left: 5px;
+ }
 </style>
