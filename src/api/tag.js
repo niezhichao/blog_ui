@@ -9,3 +9,13 @@ export function getTagList() {
   });
 
 }
+
+export function addTag(param) {
+
+  return request({
+    url: process.env.GATEWAY_API + 'admin-api/tag/add',
+    method: 'post',
+    data: param
+  });
+
+}

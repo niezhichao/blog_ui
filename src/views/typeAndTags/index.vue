@@ -32,13 +32,8 @@
               prop: "tagName",
               label: "标签名称"
             }],
-            typeListData:[{
-              typeName:"后台应用",
-              content:"后台应用技术内容"
-            }],
-            tagListData:[{
-              tagName:"java"
-            }],
+            typeListData:[],
+            tagListData:[],
           }
       },
       methods:{

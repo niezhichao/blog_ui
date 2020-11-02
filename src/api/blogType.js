@@ -8,3 +8,12 @@ export function getBlogTypeList() {
     data: null
   });
 }
+
+
+export function addBlogType(param) {
+  return request({
+    url: process.env.GATEWAY_API + 'admin-api/blogType/add',
+    method: 'post',
+    data: param
+  });
+}
