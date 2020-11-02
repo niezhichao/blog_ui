@@ -3,10 +3,10 @@
       <page-header :headerText="headerText"></page-header>
       <el-row>
         <el-col :span="11">
-          <common-comp :tableCols="classificationTableCols" dialogComponent="typeListComponent" compName="分类列表" tableHead="classificationList" class="classificationListComp"></common-comp>
+          <common-comp :typeTableData="typeListData" :tableCols="classificationTableCols" dialogComponent="typeListComponent" compName="分类列表" tableHead="classificationList" class="classificationListComp"></common-comp>
         </el-col>
         <el-col :span="12">
-          <common-comp :tableCols="tagListTableCols" dialogComponent="tagListComponent" compName="标签列表" tableHead="tagList" class="tagListComp"></common-comp>
+          <common-comp :typeTableData="tagListData" :tableCols="tagListTableCols" dialogComponent="tagListComponent" compName="标签列表" tableHead="tagList" class="tagListComp"></common-comp>
         </el-col>
       </el-row>
     </div>
@@ -29,9 +29,16 @@
               label: "分类简介"
             }],
             tagListTableCols:[{
-              prop: "typeName",
+              prop: "tagName",
               label: "标签名称"
-            }]
+            }],
+            typeListData:[{
+              typeName:"后台应用",
+              content:"后台应用技术内容"
+            }],
+            tagListData:[{
+              tagName:"java"
+            }],
           }
       },
       methods:{
