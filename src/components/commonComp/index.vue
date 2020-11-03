@@ -45,7 +45,7 @@
           :page-size="typeTableData.pageSize"
           layout="total, sizes, prev, pager, next, jumper"
           :total="typeTableData.total"
-          @size-change="handleSizeChange",
+          @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
         >
         </el-pagination>
@@ -122,10 +122,10 @@
         }
       },
       handleSizeChange(val){
-
+        this.$emit("pageSize-change",val)
       },
       handleCurrentChange(val){
-
+        this.$emit("pageNum-change",val);
       }
     }
   }

@@ -3,10 +3,28 @@
       <page-header :headerText="headerText"></page-header>
       <el-row>
         <el-col :span="11">
-          <common-comp :typeTableData="typeListData" :tableCols="classificationTableCols" dialogComponent="typeListComponent" compName="分类列表" tableHead="classificationList" class="classificationListComp"></common-comp>
+          <common-comp
+            @pageNum-change="typePageNumChange"
+            @pageSize-change="typePageSizeChange"
+            :typeTableData="typeListData"
+            :tableCols="classificationTableCols"
+            dialogComponent="typeListComponent"
+            compName="分类列表"
+            tableHead="classificationList"
+            class="classificationListComp">
+          </common-comp>
         </el-col>
         <el-col :span="12">
-          <common-comp :typeTableData="tagListData" :tableCols="tagListTableCols" dialogComponent="tagListComponent" compName="标签列表" tableHead="tagList" class="tagListComp"></common-comp>
+          <common-comp
+            @pageNum-change="tagPageNumChange"
+            @pageSize-change="tagPageSizeChange"
+            :typeTableData="tagListData"
+            :tableCols="tagListTableCols"
+            dialogComponent="tagListComponent"
+            compName="标签列表"
+            tableHead="tagList"
+            class="tagListComp">
+          </common-comp>
         </el-col>
       </el-row>
     </div>
@@ -38,16 +56,32 @@
             tagListData:[],
             tagCurrentPage:1,
             tagPageSize:5,
-            currentPage:1,
-            pageSize:5
+            typeCurrentPage:1,
+            typePageSize:5
 
           }
       },
       methods:{
+        typePageSizeChange(pageSize){
+          this.typePageSize=pageSize;
+          this.getAllBlogType();
+        },
+        tagPageSizeChange(pageSize){
+          this.tagPageSize = pageSize;
+          this.getAllTags();
+        },
+        tagPageNumChange(pageNum){
+          this.tagCurrentPage=pageNum;
+          this.getAllTags();
+        },
+        typePageNumChange(pageNum){
+          this.typeCurrentPage = pageNum;
+          this.getAllBlogType();
+        },
         getAllBlogType(){
             var param = {
-              currentPage:this.currentPage,
-              pageSize:this.pageSize
+              currentPage:this.typeCurrentPage,
+              pageSize:this.typePageSize
             }
           getAllBlogTypeWithPage(param).then(response=>{
               if (response.data.resCode="00"){
@@ -63,13 +97,12 @@
         },
         getAllTags(){
           var param = {
-            currentPage:this.currentPage,
-            pageSize:this.pageSize
+            currentPage:this.tagCurrentPage,
+            pageSize:this.tagPageSize
           };
           getAllTagsWithPage(param).then(response=>{
             if (response.data.resCode="00"){
               var page = response.data.page;
-              console.log(page);
               this.tagListData = page;
 
             }
