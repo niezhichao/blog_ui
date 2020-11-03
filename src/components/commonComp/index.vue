@@ -94,12 +94,15 @@
         this.tagListDialogVisible =false;
       },
       editRow(val){
+        //分类列表的编辑dialog赋值  传递给子组件
         var typeListFlag = this.dialogComponent == "typeListComponent";//父组件 是分类列表
         if (typeListFlag){
           this.blogTypeVoEditData = val;
           this.typeListDialogVisible = typeListFlag;
           return
         }
+
+        //标签列表的编辑dialog赋值 传递给子组件
         var tagListFlag = this.dialogComponent == "tagListComponent";//父组件 是标签列表
         if (tagListFlag){
           this.tagVoEditData = val;
