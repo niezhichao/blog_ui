@@ -29,25 +29,31 @@
         </el-row>
       </el-header>
       <el-main>
-        <el-table :data="blogList" border height="350" style="width:100%" highlight-current-row>
-          <el-table-column type="selection" width="50" fixed></el-table-column>
-          <el-table-column type="index" width="50" label="序号" fixed></el-table-column>
-          <el-table-column prop="title" show-overflow-tooltip fixed header-align="center" label="文章标题"
-                           width="245"></el-table-column>
-          <el-table-column prop="author" label="文章作者" width="100" header-align="center"></el-table-column>
-          <el-table-column prop="createTime" show-overflow-tooltip label="创建时间" width="100" header-align="center"></el-table-column>
-          <el-table-column prop="updateTime" show-overflow-tooltip label="最后编辑时间" width="150" header-align="center"></el-table-column>
-          <el-table-column prop="publicTime" show-overflow-tooltip label="发布时间" width="100" header-align="center"></el-table-column>
-          <el-table-column prop="blogSortedId" label="文章分类" width="100" header-align="center"></el-table-column>
-          <el-table-column prop="ifPublish" label="是否发布" width="100" header-align="center"></el-table-column>
-          <el-table-column label="操作" width="270" fixed="right" header-align="center">
-            <template slot-scope="scope">
-              <el-button size="mini" icon="el-icon-delete" type="danger">删除</el-button>
-              <el-button size="mini" icon="el-icon-edit" type="warning">编辑</el-button>
-              <el-button size="mini" icon="el-icon-view" type="primary" disabled>预览</el-button>
-            </template>
-          </el-table-column>
-        </el-table>
+        <div class="loadingWrapper">
+          <el-table :data="blogList"
+                    border height="350" style="width:100%"
+                    highlight-current-row
+                    v-loading="loading"
+                    element-loading-text="博客列表加载中">
+            <el-table-column type="selection" width="50" fixed></el-table-column>
+            <el-table-column type="index" width="50" label="序号" fixed></el-table-column>
+            <el-table-column prop="title" show-overflow-tooltip fixed header-align="center" label="文章标题"
+                             width="245"></el-table-column>
+            <el-table-column prop="author" label="文章作者" width="100" header-align="center"></el-table-column>
+            <el-table-column prop="createTime" show-overflow-tooltip label="创建时间" width="100" header-align="center"></el-table-column>
+            <el-table-column prop="updateTime" show-overflow-tooltip label="最后编辑时间" width="150" header-align="center"></el-table-column>
+            <el-table-column prop="publicTime" show-overflow-tooltip label="发布时间" width="100" header-align="center"></el-table-column>
+            <el-table-column prop="blogSortedId" label="文章分类" width="100" header-align="center"></el-table-column>
+            <el-table-column prop="ifPublish" label="是否发布" width="100" header-align="center"></el-table-column>
+            <el-table-column label="操作" width="270" fixed="right" header-align="center">
+              <template slot-scope="scope">
+                <el-button size="mini" icon="el-icon-delete" type="danger">删除</el-button>
+                <el-button size="mini" icon="el-icon-edit" type="warning">编辑</el-button>
+                <el-button size="mini" icon="el-icon-view" type="primary" disabled>预览</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
       </el-main>
       <el-footer>
         <template>
@@ -69,6 +75,7 @@
 </template>
 
 <script>
+  import {Loading} from "element-ui";
   import pageHeader from "../../components/pageHeader";
   import {getBlogLst} from "../../api/blog"
 
@@ -88,7 +95,8 @@
         pageSizes:[10,20,50,100],
         pageTotal:0,
         pageSize:10,
-        currentPage:1
+        currentPage:1,
+        loading:true
       }
     },
     methods:{
@@ -97,12 +105,15 @@
         this.blogQuery.pageNum = this.currentPage;
         getBlogLst(this.blogQuery).then(response =>{
           if (response.data.resCode == "00") {
-            this.blogList = response.data.mapData.data;
-            this.pageTotal = response.data.total;
-            this.pageSize = response.data.pageSize;
-            this.currentPage = response.data.pageNum;
+            this.loading = false;
+            var page = response.data.page;
+            this.blogList = page.data;
+            this.pageTotal = page.total;
+            this.pageSize = page.pageSize;
+            this.currentPage = page.pageNum;
           }
         }).catch(error =>{
+          this.loading=false;
           this.$message({
             type: "error",
             message: error
@@ -119,7 +130,6 @@
       }
     },
     created(){
-
       this.getBlogList();
     }
   }

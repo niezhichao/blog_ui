@@ -11,7 +11,12 @@
     </el-row>
     <el-row>
       <el-col :span="24">
-        <el-table :data="typeTableData" border height="350" style="width:100%" highlight-current-row>
+        <el-table
+          :data="typeTableData.data"
+          border
+          height="350" style="width:100%"
+          highlight-current-row
+        >
           <el-table-column type="selection"></el-table-column>
           <el-table-column type="index" width="50" label="序号"></el-table-column>
           <el-table-column v-for="(item,index) in tableCols"
@@ -35,11 +40,14 @@
       <el-col :span="24">
         <el-pagination
           small
-          :current-page="1"
-          :page-sizes="[100, 200, 300, 400]"
-          :page-size="100"
+          :current-page="typeTableData.currentPage"
+          :page-sizes="pageSizes"
+          :page-size="typeTableData.pageSize"
           layout="total, sizes, prev, pager, next, jumper"
-          :total="400">
+          :total="typeTableData.total"
+          @size-change="handleSizeChange",
+          @current-change="handleCurrentChange"
+        >
         </el-pagination>
       </el-col>
     </el-row>
@@ -60,7 +68,6 @@
 
 <script>
   import {typeListDialog, tagListDialog} from "../../components/dialog";
-
   export default {
     name: "commonComp",
     components: {typeListDialog, tagListDialog},
@@ -74,7 +81,11 @@
         typeListDialogVisible: false,
         tagListDialogVisible: false,
         blogTypeVoEditData:{},
-        tagVoEditData:{}
+        tagVoEditData:{},
+        pageSizes:[5,10,20,50,100],
+        currentPage:1,
+        pageSize:10,
+        total:0
       }
     },
     methods: {
@@ -109,6 +120,12 @@
           this.tagListDialogVisible = tagListFlag;
           return
         }
+      },
+      handleSizeChange(val){
+
+      },
+      handleCurrentChange(val){
+
       }
     }
   }

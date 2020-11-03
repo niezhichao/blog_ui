@@ -10,7 +10,7 @@
 </template>
 
 <script>
-	import {Sidebar,Navbar,AppMain} from "./components";
+	import {Sidebar,Navbar} from "./components";
   import appmain from "./components/AppMain";
   import tabsview from  "./components/TabsView"
 

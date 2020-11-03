@@ -15,6 +15,8 @@
 <script>
   import pageHeader from "../../components/pageHeader";
   import commonComp from "../../components/commonComp";
+  import {getAllBlogTypeWithPage} from "../../api/blogType";
+  import {getAllTagsWithPage} from "../../api/tag";
     export default {
         name: "typeAndTasMng",
       components: {pageHeader,commonComp},
@@ -29,15 +31,59 @@
               label: "分类简介"
             }],
             tagListTableCols:[{
-              prop: "tagName",
+              prop: "tagContent",
               label: "标签名称"
             }],
             typeListData:[],
             tagListData:[],
+            tagCurrentPage:1,
+            tagPageSize:5,
+            currentPage:1,
+            pageSize:5
+
           }
       },
       methods:{
+        getAllBlogType(){
+            var param = {
+              currentPage:this.currentPage,
+              pageSize:this.pageSize
+            }
+          getAllBlogTypeWithPage(param).then(response=>{
+              if (response.data.resCode="00"){
+                var page = response.data.page;
+                this.typeListData = page;
+              }
+          }).catch(error=>{
+            this.$message({
+              type:"error",
+              message:error
+            });
+          })
+        },
+        getAllTags(){
+          var param = {
+            currentPage:this.currentPage,
+            pageSize:this.pageSize
+          };
+          getAllTagsWithPage(param).then(response=>{
+            if (response.data.resCode="00"){
+              var page = response.data.page;
+              console.log(page);
+              this.tagListData = page;
 
+            }
+          }).catch(error=>{
+            this.$message({
+              type:"error",
+              message:error
+            });
+          });
+        }
+      },
+      mounted(){
+          this.getAllBlogType();
+          this.getAllTags();
       }
     }
 </script>

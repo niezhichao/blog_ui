@@ -98,14 +98,7 @@
             },
             blogTypes:[],
             artTag:"",
-            artTags:[{
-              tagContent:"linux",
-              pid:"123"
-            },
-              {
-                tagContent:"java",
-                pid:"124"
-              }]
+            artTags:[]
           }
       },
       methods:{
@@ -149,7 +142,7 @@
       mounted() {
 
           /*获取博客类型列表*/
-        /*getBlogTypeList().then(response =>{
+        getBlogTypeList().then(response =>{
 
           if (response.data.resCode == "00") {
             this.blogTypes = response.data.mapData.data;
@@ -161,7 +154,7 @@
           });
         });
 
-        /!*获取标签列表*!/
+        /*获取标签列表*/
         getTagList().then(response =>{
           if (response.data.resCode == "00") {
             this.artTags = response.data.mapData.data;
@@ -171,7 +164,7 @@
             type: "error",
             message: error
           });
-        });*/
+        });
       }
     }
 </script>
