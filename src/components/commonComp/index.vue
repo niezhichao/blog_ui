@@ -5,7 +5,7 @@
         <span class="overTableInfo">{{compName}}</span>
       </el-col>
       <el-col :span="4">
-        <el-button class="overTableBtn" @click="dialogVisibleChange(dialogComponent)" type="info" size="mini" round>添加
+        <el-button class="overTableBtn" @click="dialogVisibleChange" type="info" size="mini" round>添加
         </el-button>
       </el-col>
     </el-row>
@@ -54,20 +54,37 @@
 
     <el-dialog
       center
-      title="分类添加"
-      :visible.sync="typeListDialogVisible"
+      :visible.sync="dialogVisible"
+      :title="compName"
     >
-      <type-list-dialog @cancel-dialog="cancelTypeListDialog" :blogTypeVoEdit="blogTypeVoEditData"></type-list-diaLog>
+
+      `
+      <el-form :model="editData" ref="editData">
+        <el-row v-for="(item,index) in tableCols" :key="index">
+          <el-col :span="3">
+            <div class="prefix_input"><span style="color: red">*</span><span>{{item.label}}</span></div>
+          </el-col>
+          <el-col :span="21">
+            <el-form-item prop="tagContent">
+              <el-input v-model="editData[item.prop]"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
+      <el-row class="btnPanel">
+        <el-col :span="24">
+          <el-button @click="cancelDialog">取 消</el-button>
+          <el-button type="primary" @click="submitData">确 定</el-button>
+        </el-col>
+      </el-row>
     </el-dialog>
 
-    <el-dialog center title="标签添加" :visible.sync="tagListDialogVisible">
-      <tag-list-dialog @cancel-dialog="cancelTagListDialog" :tagVoEdit="tagVoEditData"></tag-list-dialog>
-    </el-dialog>
   </div>
 </template>
 
 <script>
   import {typeListDialog, tagListDialog} from "../../components/dialog";
+
   export default {
     name: "commonComp",
     components: {typeListDialog, tagListDialog},
@@ -75,70 +92,60 @@
      * tableHead:不同用途 用不同的class。比如分类列表用classificationList
      * compName 列表名称
      * */
-    props: ["tableHead", "compName", "tableCols", "dialogComponent","typeTableData"],
+    props: ["tableHead",
+      "compName",
+      "tableCols",
+      "dialogComponent",
+      "typeTableData"
+    ],
     data() {
       return {
-        typeListDialogVisible: false,
-        tagListDialogVisible: false,
-        blogTypeVoEditData:{},
-        tagVoEditData:{},
-        pageSizes:[5,10,20,50,100],
-        currentPage:1,
-        pageSize:10,
-        total:0
+        dialogVisible: false,
+        editData: {},
+        pageSizes: [5, 10, 20, 50, 100],
+        currentPage: 1,
+        pageSize: 10,
+        total: 0
       }
     },
     methods: {
-      dialogVisibleChange: function (val) {//切换不同列表添加按钮的弹窗
-        //点添加按钮  清空编辑弹出窗的值
-        this.blogTypeVoEditData={};
-        this.tagVoEditData={};
-
-        //切换显示不同dialog
-        this.typeListDialogVisible = val == "typeListComponent";
-        this.tagListDialogVisible = val == "tagListComponent";
+      dialogVisibleChange: function () {
+        this.editData = {};
+        this.dialogVisible = true;
       },
-      cancelTypeListDialog() {
-        this.typeListDialogVisible=false;
-      },
-      cancelTagListDialog(){
-        this.tagListDialogVisible =false;
-      },
-      editRow(val){
-        //分类列表的编辑dialog赋值  传递给子组件
-        var typeListFlag = this.dialogComponent == "typeListComponent";//父组件 是分类列表
-        if (typeListFlag){
-          this.blogTypeVoEditData = val;
-          this.typeListDialogVisible = typeListFlag;
-          return
+      editRow(val) {
+        var temp = {};
+        for (var item of this.tableCols) {
+          temp[item.prop] = val[item.prop];
         }
+        this.editData = temp;
+        this.dialogVisible = true;
+      },
+      handleSizeChange(val) {
+        this.$emit("pageSize-change", val)
+      },
+      handleCurrentChange(val) {
+        this.$emit("pageNum-change", val);
+      },
+      submitData() {
 
-        //标签列表的编辑dialog赋值 传递给子组件
-        var tagListFlag = this.dialogComponent == "tagListComponent";//父组件 是标签列表
-        if (tagListFlag){
-          this.tagVoEditData = val;
-          this.tagListDialogVisible = tagListFlag;
-          return
-        }
       },
-      handleSizeChange(val){
-        this.$emit("pageSize-change",val)
-      },
-      handleCurrentChange(val){
-        this.$emit("pageNum-change",val);
+      cancelDialog() {
+        this.editData = {};
+        this.dialogVisible = false;
       }
     }
   }
 </script>
 
 <style scoped>
-  .classificationList {
+  .blueHead {
     margin-top: 20px;
     min-height: 36px;
     background-color: #409EFF;
   }
 
-  .tagList {
+  .redHead {
     margin-top: 20px;
     min-height: 36px;
     background-color: #F56C6C;
@@ -157,6 +164,11 @@
   }
 
   .paginationBlock {
+    margin-top: 20px;
+  }
+
+  .btnPanel {
+    text-align: center;
     margin-top: 20px;
   }
 </style>

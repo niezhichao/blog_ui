@@ -10,7 +10,7 @@
             :tableCols="classificationTableCols"
             dialogComponent="typeListComponent"
             compName="分类列表"
-            tableHead="classificationList"
+            tableHead="blueHead"
             class="classificationListComp">
           </common-comp>
         </el-col>
@@ -22,7 +22,7 @@
             :tableCols="tagListTableCols"
             dialogComponent="tagListComponent"
             compName="标签列表"
-            tableHead="tagList"
+            tableHead="redHead"
             class="tagListComp">
           </common-comp>
         </el-col>
