@@ -59,13 +59,13 @@
     >
 
       `
-      <el-form :model="editData" ref="editData">
+      <el-form :model="editData" ref="editData" :rules="rules">
         <el-row v-for="(item,index) in tableCols" :key="index">
           <el-col :span="3">
             <div class="prefix_input"><span style="color: red">*</span><span>{{item.label}}</span></div>
           </el-col>
           <el-col :span="21">
-            <el-form-item prop="tagContent">
+            <el-form-item prop="inputText">
               <el-input v-model="editData[item.prop]"></el-input>
             </el-form-item>
           </el-col>
@@ -74,7 +74,7 @@
       <el-row class="btnPanel">
         <el-col :span="24">
           <el-button @click="cancelDialog">取 消</el-button>
-          <el-button type="primary" @click="submitData">确 定</el-button>
+          <el-button type="primary" @click="submitData('editData')">确 定</el-button>
         </el-col>
       </el-row>
     </el-dialog>
@@ -101,21 +101,29 @@
     data() {
       return {
         dialogVisible: false,
+        dispatchFlag:false,//判断提交添加 还是编辑的数据
         editData: {},
         pageSizes: [5, 10, 20, 50, 100],
         currentPage: 1,
         pageSize: 10,
-        total: 0
+        total: 0,
+        rules:{
+          inputText:{
+            required: true, message: '不能为空', trigger: 'blur'
+          }
+        }
       }
     },
     methods: {
       dialogVisibleChange: function () {
+        this.dispatchFlag = false;
         this.editData = {};
         this.dialogVisible = true;
       },
       editRow(val) {
+        this.dispatchFlag = true;
         var temp = {};
-        for (var item of this.tableCols) {
+        for (var item of this.tableCols) {//将选中行的值取出，赋值给编辑dialog的editData（直接赋值会传递引用导致改变列表的值）
           temp[item.prop] = val[item.prop];
         }
         this.editData = temp;
@@ -127,8 +135,22 @@
       handleCurrentChange(val) {
         this.$emit("pageNum-change", val);
       },
-      submitData() {
-
+      submitData(val) {
+        this.$refs[val].validate(valid =>{
+          if (valid){
+            if (this.dispatchFlag){
+              this.$emit("updateData",this.editData);
+              return
+            }
+            this.$emit("insertData",this.editData);
+          }else {
+            this.$message({
+              message: '必输项不能为空',
+              type: 'warning'
+            });
+            return false;
+          }
+        })
       },
       cancelDialog() {
         this.editData = {};

@@ -4,6 +4,8 @@
       <el-row>
         <el-col :span="11">
           <common-comp
+            @updateData="updateTypeData"
+            @insertData="insertTypeData"
             @pageNum-change="typePageNumChange"
             @pageSize-change="typePageSizeChange"
             :typeTableData="typeListData"
@@ -16,6 +18,8 @@
         </el-col>
         <el-col :span="12">
           <common-comp
+            @updateData="updateTagData"
+            @insertData="insertTagData"
             @pageNum-change="tagPageNumChange"
             @pageSize-change="tagPageSizeChange"
             :typeTableData="tagListData"
@@ -33,8 +37,9 @@
 <script>
   import pageHeader from "../../components/pageHeader";
   import commonComp from "../../components/commonComp";
-  import {getAllBlogTypeWithPage} from "../../api/blogType";
-  import {getAllTagsWithPage} from "../../api/tag";
+  import {getAllBlogTypeWithPage,addBlogType} from "../../api/blogType";
+  import {getAllTagsWithPage,addTag} from "../../api/tag";
+
     export default {
         name: "typeAndTasMng",
       components: {pageHeader,commonComp},
@@ -62,6 +67,19 @@
           }
       },
       methods:{
+        updateTypeData(val){
+          console.log("updateTypeData:"+val);
+        },
+        insertTypeData(val){
+
+          console.log("insertTypeData:"+val);
+        },
+        updateTagData(val){
+          console.log("updateTagData:"+val);
+        },
+        insertTagData(val){
+          console.log("insertTagData:"+val);
+        },
         typePageSizeChange(pageSize){
           this.typePageSize=pageSize;
           this.getAllBlogType();
