@@ -29,7 +29,7 @@
           ></el-table-column>
           <el-table-column label="操作" min-width="40%" header-align="center">
             <template slot-scope="scope">
-              <el-button size="mini" icon="el-icon-delete" type="danger">删除</el-button>
+              <el-button size="mini" icon="el-icon-delete" type="danger" @click="deleteRow(scope.row)">删除</el-button>
               <el-button size="mini" icon="el-icon-edit" type="warning" @click="editRow(scope.row)">编辑</el-button>
             </template>
           </el-table-column>
@@ -59,13 +59,13 @@
     >
 
       `
-      <el-form :model="editData" ref="editData" :rules="rules">
+      <el-form :model="editData" ref="editDataForm" :rules="rules">
         <el-row v-for="(item,index) in tableCols" :key="index">
           <el-col :span="3">
             <div class="prefix_input"><span style="color: red">*</span><span>{{item.label}}</span></div>
           </el-col>
           <el-col :span="21">
-            <el-form-item prop="inputText">
+            <el-form-item :prop="item.prop">
               <el-input v-model="editData[item.prop]"></el-input>
             </el-form-item>
           </el-col>
@@ -74,7 +74,7 @@
       <el-row class="btnPanel">
         <el-col :span="24">
           <el-button @click="cancelDialog">取 消</el-button>
-          <el-button type="primary" @click="submitData('editData')">确 定</el-button>
+          <el-button type="primary" @click="submitData('editDataForm')">确 定</el-button>
         </el-col>
       </el-row>
     </el-dialog>
@@ -96,7 +96,8 @@
       "compName",
       "tableCols",
       "dialogComponent",
-      "typeTableData"
+      "typeTableData",
+      "validateRules"
     ],
     data() {
       return {
@@ -107,11 +108,7 @@
         currentPage: 1,
         pageSize: 10,
         total: 0,
-        rules:{
-          inputText:{
-            required: true, message: '不能为空', trigger: 'blur'
-          }
-        }
+        rules:this.validateRules
       }
     },
     methods: {
@@ -125,9 +122,14 @@
         var temp = {};
         for (var item of this.tableCols) {//将选中行的值取出，赋值给编辑dialog的editData（直接赋值会传递引用导致改变列表的值）
           temp[item.prop] = val[item.prop];
+          temp.pid = val.pid;
         }
         this.editData = temp;
         this.dialogVisible = true;
+      },
+      deleteRow(val){
+        let id = val.pid;
+         this.$emit("deleteData",id);
       },
       handleSizeChange(val) {
         this.$emit("pageSize-change", val)

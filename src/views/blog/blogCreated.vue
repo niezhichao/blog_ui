@@ -107,16 +107,20 @@
           var item = that.artTags[command];
           var tagsArr = that.blogInfo.tags;
           if (tagsArr.some(val=> val.pid == item.pid))return //重复选择的标签 不新增
+          item = {
+            pid:item.pid,
+            tagContent: item.tagContent
+          }
           that.blogInfo.tags.push(item);
         },
         handleTagClose:function(tag){
          let tags = this.blogInfo.tags;
           tags.splice(tags.indexOf(tag),1);
-          console.log(this.blogInfo.tags)
         },
         publishArticle: function () {
           this.blogInfo.content = this.$refs.ckeditor.getData();
           this.blogInfo.ifPublish = this.$IfPublic.YES;
+
          addBlog(this.blogInfo).then(response => {
             if (response.data.resCode == "00"){
               this.$message({
@@ -124,7 +128,12 @@
                 message: response.data.resMsg
               })
             }
-          })
+          }).catch(error=>{
+           this.$message({
+             type:"warning",
+             message:error
+           });
+         })
         },
         draftArticle:function () {
           this.blogInfo.content = this.$refs.ckeditor.getData();
@@ -136,6 +145,11 @@
                 message: response.data.resMsg
               })
             }
+          }).catch(error=>{
+            this.$message({
+              type:"warning",
+              message:error
+            });
           })
         }
       },

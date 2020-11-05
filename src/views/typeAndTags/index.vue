@@ -4,12 +4,14 @@
       <el-row>
         <el-col :span="11">
           <common-comp
+            @deleteData="deleteTypeById"
             @updateData="updateTypeData"
             @insertData="insertTypeData"
             @pageNum-change="typePageNumChange"
             @pageSize-change="typePageSizeChange"
             :typeTableData="typeListData"
             :tableCols="classificationTableCols"
+            :validateRules="typeListValidateRules"
             dialogComponent="typeListComponent"
             compName="分类列表"
             tableHead="blueHead"
@@ -18,12 +20,14 @@
         </el-col>
         <el-col :span="12">
           <common-comp
+            @deleteData="deleteTagById"
             @updateData="updateTagData"
             @insertData="insertTagData"
             @pageNum-change="tagPageNumChange"
             @pageSize-change="tagPageSizeChange"
             :typeTableData="tagListData"
             :tableCols="tagListTableCols"
+            :validateRules="tagListValidateRules"
             dialogComponent="tagListComponent"
             compName="标签列表"
             tableHead="redHead"
@@ -37,8 +41,8 @@
 <script>
   import pageHeader from "../../components/pageHeader";
   import commonComp from "../../components/commonComp";
-  import {getAllBlogTypeWithPage,addBlogType} from "../../api/blogType";
-  import {getAllTagsWithPage,addTag} from "../../api/tag";
+  import {getAllBlogTypeWithPage,addBlogType,updateBlogType,delType} from "../../api/blogType";
+  import {getAllTagsWithPage,addTag,updateTag,delTag} from "../../api/tag";
 
     export default {
         name: "typeAndTasMng",
@@ -57,6 +61,19 @@
               prop: "tagContent",
               label: "标签名称"
             }],
+            tagListValidateRules:{
+              tagContent:{
+                required: true, message: '标签名称不能为空', trigger: 'blur'
+              }
+            },
+            typeListValidateRules:{
+              typeName:{
+                required: true, message: '分类名称不能为空', trigger: 'blur'
+              },
+              content:{
+                required: true, message: '分类简介不能为空', trigger: 'blur'
+              }
+            },
             typeListData:[],
             tagListData:[],
             tagCurrentPage:1,
@@ -67,18 +84,102 @@
           }
       },
       methods:{
+        deleteTypeById(val){
+          var param = {
+            id:val
+          }
+          delType(param).then(response=>{
+            if (response.data.resCode == "00"){
+              this.$message({
+                type: "success",
+                message: response.data.resMsg
+              })
+            }
+          }).catch(error=>{
+            this.$message({
+              message: error,
+              type: 'warning'
+            })
+          });
+        },
+        deleteTagById(val){
+          var param = {
+            id:val
+          }
+          delTag(param).then(response=>{
+            if (response.data.resCode == "00"){
+              this.$message({
+                type: "success",
+                message: response.data.resMsg
+              })
+            }
+          }).catch(error=>{
+            this.$message({
+              message: error,
+              type: 'warning'
+            })
+          });
+        },
         updateTypeData(val){
-          console.log("updateTypeData:"+val);
+          updateBlogType(val).then(response=>{
+            if (response.data.resCode == "00"){
+              this.$message({
+                type: "success",
+                message: response.data.resMsg
+              })
+            }
+          }).catch(error=>{
+            this.$message({
+              message: error,
+              type: 'warning'
+            })
+          });
         },
         insertTypeData(val){
 
-          console.log("insertTypeData:"+val);
+          addBlogType(val).then(response=>{
+            if (response.data.resCode == "00"){
+              this.$message({
+                type: "success",
+                message: response.data.resMsg
+              })
+            }
+          }).catch(error=>{
+            this.$message({
+              message: error,
+              type: 'warning'
+            })
+          });
         },
         updateTagData(val){
-          console.log("updateTagData:"+val);
+          updateTag(val).then(response=>{
+            if (response.data.resCode == "00"){
+              this.$message({
+                type: "success",
+                message: response.data.resMsg
+              })
+            }
+          }).catch(error=>{
+            this.$message({
+              message: error,
+              type: 'warning'
+            })
+          });
         },
         insertTagData(val){
-          console.log("insertTagData:"+val);
+          addTag(val).then(response=>{
+            if (response.data.resCode == "00"){
+              this.$message({
+                type: "success",
+                message: response.data.resMsg
+              })
+            }
+          }).catch(error=>{
+            this.$message({
+              message: error,
+              type: 'warning'
+            })
+          });
         },
         typePageSizeChange(pageSize){
           this.typePageSize=pageSize;

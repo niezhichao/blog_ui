@@ -35,3 +35,19 @@ export function getAllBlogTypeWithPage(param) {
     params: param
   });
 }
+
+export function updateBlogType(param) {
+  return request({
+    url: process.env.GATEWAY_API + 'admin-api/blogType/update',
+    method: 'post',
+    data: param
+  });
+}
+
+export function delType(param) {
+  return request({
+    url: process.env.GATEWAY_API + 'admin-api/blogType/delete',
+    method: 'post',
+    params: param
+  });
+}

@@ -21,7 +21,15 @@ export function addTag(param) {
     method: 'post',
     data: param
   });
+}
 
+export function updateTag(param) {
+
+  return request({
+    url: process.env.GATEWAY_API + 'admin-api/tag/update',
+    method: 'post',
+    data: param
+  });
 }
 
 /**
@@ -36,4 +44,13 @@ export function getAllTagsWithPage(param) {
     params: param
   });
 
+}
+
+export function delTag(param) {
+
+  return request({
+    url: process.env.GATEWAY_API + 'admin-api/tag/delete',
+    method: 'post',
+    params: param
+  });
 }
