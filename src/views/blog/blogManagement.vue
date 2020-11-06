@@ -43,7 +43,19 @@
             <el-table-column prop="createTime" show-overflow-tooltip label="创建时间" width="100" header-align="center"></el-table-column>
             <el-table-column prop="updateTime" show-overflow-tooltip label="最后编辑时间" width="150" header-align="center"></el-table-column>
             <el-table-column prop="publicTime" show-overflow-tooltip label="发布时间" width="100" header-align="center"></el-table-column>
-            <el-table-column prop="blogSortedId" label="文章分类" width="100" header-align="center"></el-table-column>
+            <el-table-column  label="文章分类" width="100" header-align="center">
+                  <template slot-scope="scope">
+                      <el-select v-model="scope">
+                        <el-option
+                          v-for="item in blogSortOptions"
+                          :key="item.value"
+                          :label="item.label"
+                          :value="item.value"
+                        >
+                        </el-option>
+                      </el-select>
+                  </template>
+            </el-table-column>
             <el-table-column prop="ifPublish" label="是否发布" width="100" header-align="center"></el-table-column>
             <el-table-column label="操作" width="270" fixed="right" header-align="center">
               <template slot-scope="scope">
@@ -75,15 +87,17 @@
 </template>
 
 <script>
-  import {Loading} from "element-ui";
   import pageHeader from "../../components/pageHeader";
-  import {getBlogLst} from "../../api/blog"
+  import {getBlogLst} from "../../api/blog";
+  import {getBlogSortList}  from "../../api/blogSort";
 
   export default {
     name: "blogManagement",
     components: {pageHeader},
     data() {
       return {
+        blogSortOptions:[],
+        blogSortList:[],
         headerText: "文章管理|",
         blogList: [],
         blogQuery:{
@@ -119,6 +133,19 @@
             message: error
           });
         });
+      },
+      getAllBlogSort(){
+            getBlogSortList().then(response =>{
+              if (response.data.resCode == "00") {
+
+              }
+            }).catch(error =>{
+              this.loading=false;
+              this.$message({
+                type: "error",
+                message: error
+              });
+            });
       },
       handleCurrentChange: function (val) {
         this.currentPage = val;

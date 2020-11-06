@@ -4,19 +4,19 @@ import request from "../utils/request";
  * 获取所有分类  不含分页
  * @param param
  */
-export function getBlogTypeList() {
+export function getBlogSortList() {
 
   return request({
-    url: process.env.GATEWAY_API + 'admin-api/blogType/all',
+    url: process.env.GATEWAY_API + 'admin-api/blogSort/all',
     method: 'get',
     params: null
   });
 }
 
 
-export function addBlogType(param) {
+export function addBlogSort(param) {
   return request({
-    url: process.env.GATEWAY_API + 'admin-api/blogType/add',
+    url: process.env.GATEWAY_API + 'admin-api/blogSort/add',
     method: 'post',
     data: param
   });
@@ -28,25 +28,25 @@ export function addBlogType(param) {
  * get 方式传第参数 要用params
  * json 方式 用data
  */
-export function getAllBlogTypeWithPage(param) {
+export function getAllBlogSortWithPage(param) {
   return request({
-    url: process.env.GATEWAY_API + 'admin-api/blogType/page/all',
+    url: process.env.GATEWAY_API + 'admin-api/blogSort/page/all',
     method: 'get',
     params: param
   });
 }
 
-export function updateBlogType(param) {
+export function updateBlogSort(param) {
   return request({
-    url: process.env.GATEWAY_API + 'admin-api/blogType/update',
+    url: process.env.GATEWAY_API + 'admin-api/blogSort/update',
     method: 'post',
     data: param
   });
 }
 
-export function delType(param) {
+export function delBlogSort(param) {
   return request({
-    url: process.env.GATEWAY_API + 'admin-api/blogType/delete',
+    url: process.env.GATEWAY_API + 'admin-api/blogSort/delete',
     method: 'post',
     params: param
   });

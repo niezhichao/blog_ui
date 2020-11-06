@@ -83,11 +83,8 @@
 </template>
 
 <script>
-  import {typeListDialog, tagListDialog} from "../../components/dialog";
-
   export default {
     name: "commonComp",
-    components: {typeListDialog, tagListDialog},
     /**
      * tableHead:不同用途 用不同的class。比如分类列表用classificationList
      * compName 列表名称

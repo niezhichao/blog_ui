@@ -4,9 +4,9 @@
       <el-row>
         <el-col :span="11">
           <common-comp
-            @deleteData="deleteTypeById"
-            @updateData="updateTypeData"
-            @insertData="insertTypeData"
+            @deleteData="deleteBlogSortById"
+            @updateData="updateBlogSortData"
+            @insertData="insertBlogSortData"
             @pageNum-change="typePageNumChange"
             @pageSize-change="typePageSizeChange"
             :typeTableData="typeListData"
@@ -41,7 +41,7 @@
 <script>
   import pageHeader from "../../components/pageHeader";
   import commonComp from "../../components/commonComp";
-  import {getAllBlogTypeWithPage,addBlogType,updateBlogType,delType} from "../../api/blogType";
+  import {getAllBlogSortWithPage,addBlogSort,updateBlogSort,delBlogSort} from "../../api/blogSort";
   import {getAllTagsWithPage,addTag,updateTag,delTag} from "../../api/tag";
 
     export default {
@@ -84,11 +84,11 @@
           }
       },
       methods:{
-        deleteTypeById(val){
+        deleteBlogSortById(val){
           var param = {
             id:val
           }
-          delType(param).then(response=>{
+          delBlogSort(param).then(response=>{
             if (response.data.resCode == "00"){
               this.$message({
                 type: "success",
@@ -120,8 +120,8 @@
             })
           });
         },
-        updateTypeData(val){
-          updateBlogType(val).then(response=>{
+        updateBlogSortData(val){
+          updateBlogSort(val).then(response=>{
             if (response.data.resCode == "00"){
               this.$message({
                 type: "success",
@@ -135,9 +135,9 @@
             })
           });
         },
-        insertTypeData(val){
+        insertBlogSortData(val){
 
-          addBlogType(val).then(response=>{
+          addBlogSort(val).then(response=>{
             if (response.data.resCode == "00"){
               this.$message({
                 type: "success",
@@ -197,12 +197,12 @@
           this.typeCurrentPage = pageNum;
           this.getAllBlogType();
         },
-        getAllBlogType(){
+        getAllBlogSort(){
             var param = {
               currentPage:this.typeCurrentPage,
               pageSize:this.typePageSize
             }
-          getAllBlogTypeWithPage(param).then(response=>{
+          getAllBlogSortWithPage(param).then(response=>{
               if (response.data.resCode="00"){
                 var page = response.data.page;
                 this.typeListData = page;
@@ -234,7 +234,7 @@
         }
       },
       mounted(){
-          this.getAllBlogType();
+          this.getAllBlogSort();
           this.getAllTags();
       }
     }

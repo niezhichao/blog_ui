@@ -20,7 +20,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="10">
-              <el-select size="small" v-model="blogInfo.blogSortedId" style="width: 150px"  placeholder="请选择文章分类">
+              <el-select size="small" v-model="blogInfo.blogSort.pid" style="width: 150px"  placeholder="请选择文章分类">
                 <el-option
                   v-for="item,index in blogTypes"
                   :key="index"
@@ -75,7 +75,7 @@
 <script>
   import CKEditor from "../../components/CKEditor";
   import {addBlog} from "../../api/blog";
-  import {getBlogTypeList} from "../../api/blogType";
+  import {getBlogSortList} from "../../api/blogSort";
   import {getTagList} from "../../api/tag";
   import pageHeader from "../../components/pageHeader";
   export default {
@@ -90,7 +90,7 @@
             blogInfo:{
               title: null,
               author: null,
-              blogSortedId: null,
+              blogSort: {},
               tags: [],
               articlesQuoted: null,
               content: null,
@@ -156,10 +156,10 @@
       mounted() {
 
           /*获取博客类型列表*/
-        getBlogTypeList().then(response =>{
+        getBlogSortList().then(response =>{
 
           if (response.data.resCode == "00") {
-            this.blogTypes = response.data.mapData.data;
+            this.blogTypes = response.data.response;
           }
         }).catch(error =>{
           this.$message({
@@ -171,7 +171,7 @@
         /*获取标签列表*/
         getTagList().then(response =>{
           if (response.data.resCode == "00") {
-            this.artTags = response.data.mapData.data;
+            this.artTags = response.data.response;
           }
         }).catch(error =>{
           this.$message({
