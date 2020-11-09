@@ -5,19 +5,19 @@
       <el-header>
         <el-row :gutter="3">
           <el-col :span="9">
-            <el-button type="primary"><i class="el-icon-plus"></i>新增</el-button>
-            <el-button type="primary" plain><i class="el-icon-edit"></i>编辑</el-button>
-            <el-button type="danger" plain><i class="el-icon-delete"></i>删除</el-button>
-            <el-button><i class="el-icon-refresh"></i>刷新</el-button>
+            <el-button size="mini" type="primary"><i class="el-icon-plus"></i>新增</el-button>
+            <el-button size="mini" type="primary" plain><i class="el-icon-edit"></i>编辑</el-button>
+            <el-button size="mini" type="danger" plain><i class="el-icon-delete"></i>删除</el-button>
+            <el-button size="mini"><i class="el-icon-refresh"></i>刷新</el-button>
           </el-col>
           <el-col :span="4">
-            <el-input placeholder="请输入博客名" v-model="blogQuery.title" clearable></el-input>
+            <el-input size="mini" placeholder="请输入博客名" v-model="blogQuery.title" clearable></el-input>
           </el-col>
           <el-col :span="4">
-            <el-input placeholder="请输入博客分类" v-model="blogQuery.blogType" clearable></el-input>
+            <el-input size="mini" placeholder="请输入博客分类" v-model="blogQuery.blogType" clearable></el-input>
           </el-col>
           <el-col :span="7">
-            <el-button type="primary" icon="el-icon-search">搜索</el-button>
+            <el-button size="mini" type="primary" icon="el-icon-search">搜索</el-button>
           </el-col>
         </el-row>
         <el-row>
@@ -31,7 +31,7 @@
       <el-main>
         <div class="loadingWrapper">
           <el-table :data="blogList"
-                    border height="350" style="width:100%"
+                    border height="390" style="width:100%"
                     highlight-current-row
                     v-loading="loading"
                     element-loading-text="博客列表加载中">
@@ -43,20 +43,25 @@
             <el-table-column prop="createTime" show-overflow-tooltip label="创建时间" width="100" header-align="center"></el-table-column>
             <el-table-column prop="updateTime" show-overflow-tooltip label="最后编辑时间" width="150" header-align="center"></el-table-column>
             <el-table-column prop="publicTime" show-overflow-tooltip label="发布时间" width="100" header-align="center"></el-table-column>
-            <el-table-column  label="文章分类" width="100" header-align="center">
+            <el-table-column  label="文章分类" width="140" header-align="center">
                   <template slot-scope="scope">
-                      <el-select v-model="scope">
+                      <el-select disabled  placeholder="无数据"  v-model="blogList[scope.$index].blogSort == null?'':blogList[scope.$index].blogSort.pid">
                         <el-option
                           v-for="item in blogSortOptions"
-                          :key="item.value"
-                          :label="item.label"
-                          :value="item.value"
+                          :key="item.pid"
+                          :label="item.typeName"
+                          :value="item.pid"
                         >
                         </el-option>
                       </el-select>
                   </template>
             </el-table-column>
-            <el-table-column prop="ifPublish" label="是否发布" width="100" header-align="center"></el-table-column>
+            <el-table-column prop="ifPublish" label="是否发布" width="100" header-align="center">
+                <template slot-scope="scope">
+                  <el-tag type="success" v-if="scope.row.ifPublish == '1'">已发布</el-tag>
+                  <el-tag type="danger" v-else>未发布</el-tag>
+                </template>
+            </el-table-column>
             <el-table-column label="操作" width="270" fixed="right" header-align="center">
               <template slot-scope="scope">
                 <el-button size="mini" icon="el-icon-delete" type="danger">删除</el-button>
@@ -122,6 +127,7 @@
             this.loading = false;
             var page = response.data.page;
             this.blogList = page.data;
+            console.log(this.blogList);
             this.pageTotal = page.total;
             this.pageSize = page.pageSize;
             this.currentPage = page.pageNum;
@@ -135,9 +141,10 @@
         });
       },
       getAllBlogSort(){
-            getBlogSortList().then(response =>{
-              if (response.data.resCode == "00") {
-
+            getBlogSortList().then(httpResult =>{
+              if (httpResult.data.resCode == "00") {
+                var resData = httpResult.data.response;
+                this.blogSortOptions = resData;
               }
             }).catch(error =>{
               this.loading=false;
@@ -157,6 +164,7 @@
       }
     },
     created(){
+      this.getAllBlogSort();
       this.getBlogList();
     }
   }
@@ -164,13 +172,15 @@
 
 <style scoped>
   .blogManagementWrapper {
-    margin-top: 20px;
+    margin-top: 10px;
     height: 570px;
     border-bottom: 1px solid #d9ecff;
     background-color: ghostwhite;
     box-shadow: 5px 5px 3px white, 0 0 3px 0 whitesmoke;
   }
-
+.loadingWrapper{
+  margin-top: 20px;
+}
   .promptText {
     font-family: "微软雅黑";
     font-size: small;
