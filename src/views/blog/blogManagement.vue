@@ -7,17 +7,29 @@
           <el-col :span="9">
             <el-button size="mini" type="primary"><i class="el-icon-plus"></i>新增</el-button>
             <el-button size="mini" type="primary" plain><i class="el-icon-edit"></i>编辑</el-button>
-            <el-button size="mini" type="danger" plain><i class="el-icon-delete"></i>删除</el-button>
+            <el-button size="mini" type="danger" plain @click="deleteSelections"><i class="el-icon-delete" ></i>删除</el-button>
             <el-button size="mini"><i class="el-icon-refresh"></i>刷新</el-button>
           </el-col>
           <el-col :span="4">
-            <el-input size="mini" placeholder="请输入博客名" v-model="blogQuery.title" clearable></el-input>
+            <el-input size="mini" placeholder="请输入文章标题" v-model="blogQuery.title" clearable></el-input>
           </el-col>
           <el-col :span="4">
-            <el-input size="mini" placeholder="请输入博客分类" v-model="blogQuery.blogType" clearable></el-input>
+            <el-select size="mini"
+                       placeholder="选择分类名称"
+                       clearable
+                       @change="blogSortSelected"
+                       v-model="blogQuery.blogSort.pid">
+              <el-option
+                v-for="item in blogSortOptions"
+                :key="item.pid"
+                :label="item.typeName"
+                :value="item.pid"
+              >
+              </el-option>
+            </el-select>
           </el-col>
           <el-col :span="7">
-            <el-button size="mini" type="primary" icon="el-icon-search">搜索</el-button>
+            <el-button size="mini" type="primary" icon="el-icon-search" @click="searchBlog">搜索</el-button>
           </el-col>
         </el-row>
         <el-row>
@@ -34,6 +46,7 @@
                     border height="390" style="width:100%"
                     highlight-current-row
                     v-loading="loading"
+                    @selection-change="selectionChange"
                     element-loading-text="博客列表加载中">
             <el-table-column type="selection" width="50" fixed></el-table-column>
             <el-table-column type="index" width="50" label="序号" fixed></el-table-column>
@@ -93,7 +106,7 @@
 
 <script>
   import pageHeader from "../../components/pageHeader";
-  import {getBlogLst} from "../../api/blog";
+  import {getBlogLst,delBlogLst} from "../../api/blog";
   import {getBlogSortList}  from "../../api/blogSort";
 
   export default {
@@ -101,13 +114,14 @@
     components: {pageHeader},
     data() {
       return {
+        ids:[],
         blogSortOptions:[],
         blogSortList:[],
         headerText: "文章管理|",
         blogList: [],
         blogQuery:{
           title:"",
-          blogSortedId:"",
+          blogSort:{},
           pageSize: null,
           pageNum: null
         },
@@ -119,6 +133,44 @@
       }
     },
     methods:{
+      deleteSelections(){
+        var ids = this.ids;
+        if (ids.length < 1){
+          this.$message({
+            type:"warning",
+            message:"选择要删除的行"
+          });
+          return
+        }
+        var param ={
+          ids:ids+''
+        }
+        delBlogLst(param).then(res => {
+          if (res.data.resCode == "00"){
+            alert("seccess")
+          }
+        }).catch(error=>{
+          alert(error)
+        })
+      },
+      selectionChange(selection){
+        this.ids=[];
+        for (var index in selection){
+          let item = selection[index];
+          this.ids.push(item.pid);
+        }
+        console.log(this.ids)
+      },
+      blogSortSelected(select){
+        var blogSort = {
+          pid:select
+        };
+        this.blogQuery.blogSort = blogSort;
+        this.getBlogList();
+      },
+       searchBlog(){
+         this.getBlogList();
+      },
       getBlogList: function(){
         this.blogQuery.pageSize = this.pageSize;
         this.blogQuery.pageNum = this.currentPage;
@@ -127,7 +179,6 @@
             this.loading = false;
             var page = response.data.page;
             this.blogList = page.data;
-            console.log(this.blogList);
             this.pageTotal = page.total;
             this.pageSize = page.pageSize;
             this.currentPage = page.pageNum;
@@ -139,6 +190,7 @@
             message: error
           });
         });
+
       },
       getAllBlogSort(){
             getBlogSortList().then(httpResult =>{

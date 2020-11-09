@@ -18,3 +18,12 @@ export function getBlogLst(param) {
   })
 }
 
+export function delBlogLst(param) {
+
+  return request({
+    url: process.env.GATEWAY_API + 'admin-api/blog/delete/list',
+    method: "post",
+    params: param
+  })
+}
+
