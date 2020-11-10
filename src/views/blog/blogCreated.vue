@@ -59,6 +59,15 @@
             </el-input>
           </el-col>
         </el-row>
+
+        <el-row>
+          <el-col :span="6" >
+               <span style="color: red">*</span><span>是否原创</span>
+               <el-radio style="background-color: #d9ecff" v-model="blogInfo.ifOriginal"  label="1" border>是</el-radio>
+               <el-radio style="background-color: white" v-model="blogInfo.ifOriginal"  label="0" border>否</el-radio>
+          </el-col>
+        </el-row>
+
         <el-row>
           <CKEditor ref="ckeditor"></CKEditor>
         </el-row>
@@ -88,6 +97,7 @@
           return {
             headerText: "文章发布|",
             blogInfo:{
+              ifOriginal:null,
               title: null,
               author: null,
               blogSort: {},

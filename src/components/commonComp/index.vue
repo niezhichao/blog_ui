@@ -61,10 +61,10 @@
       `
       <el-form :model="editData" ref="editDataForm" :rules="rules">
         <el-row v-for="(item,index) in tableCols" :key="index">
-          <el-col :span="3">
+          <el-col :span="2">
             <div class="prefix_input"><span style="color: red">*</span><span>{{item.label}}</span></div>
           </el-col>
-          <el-col :span="21">
+          <el-col :span="22">
             <el-form-item :prop="item.prop">
               <el-input v-model="editData[item.prop]"></el-input>
             </el-form-item>

@@ -5,10 +5,10 @@
       <el-header>
         <el-row :gutter="3">
           <el-col :span="9">
-            <el-button size="mini" type="primary"><i class="el-icon-plus"></i>新增</el-button>
-            <el-button size="mini" type="primary" plain><i class="el-icon-edit"></i>编辑</el-button>
+            <el-button @click="toAddBlogPage" size="mini" type="primary"><i class="el-icon-plus"></i>新增</el-button>
+            <el-button disabled size="mini" type="primary" plain><i class="el-icon-edit"></i>编辑</el-button>
             <el-button size="mini" type="danger" plain @click="deleteSelections"><i class="el-icon-delete" ></i>删除</el-button>
-            <el-button size="mini"><i class="el-icon-refresh"></i>刷新</el-button>
+            <el-button @click="refreshTable" size="mini"><i class="el-icon-refresh"></i>刷新</el-button>
           </el-col>
           <el-col :span="4">
             <el-input size="mini" placeholder="请输入文章标题" v-model="blogQuery.title" clearable></el-input>
@@ -35,8 +35,8 @@
         <el-row>
           <el-col :span="12">
             <i class="el-icon-info" style="color: #409eff"></i><span class="promptText">当前表格已选择</span><span
-            class="spectialText">0</span><span class="promptText">项</span><span
-            class="spectialText clearTableChoose">清空</span>
+            class="spectialText">{{this.ids.length}}</span><span class="promptText">项</span><span
+            class="spectialText clearTableChoose" @click="toggleSelection">清空</span>
           </el-col>
         </el-row>
       </el-header>
@@ -46,6 +46,7 @@
                     border height="390" style="width:100%"
                     highlight-current-row
                     v-loading="loading"
+                    ref="blogListTable"
                     @selection-change="selectionChange"
                     element-loading-text="博客列表加载中">
             <el-table-column type="selection" width="50" fixed></el-table-column>
@@ -77,8 +78,8 @@
             </el-table-column>
             <el-table-column label="操作" width="270" fixed="right" header-align="center">
               <template slot-scope="scope">
-                <el-button size="mini" icon="el-icon-delete" type="danger">删除</el-button>
-                <el-button size="mini" icon="el-icon-edit" type="warning">编辑</el-button>
+                <el-button @click="deleteRow(scope.row)" size="mini" icon="el-icon-delete" type="danger">删除</el-button>
+                <el-button @click="editRow(scope.row)" size="mini" icon="el-icon-edit" type="warning">编辑</el-button>
                 <el-button size="mini" icon="el-icon-view" type="primary" disabled>预览</el-button>
               </template>
             </el-table-column>
@@ -101,12 +102,72 @@
         </template>
       </el-footer>
     </el-container>
+
+    <el-dialog
+    title="编辑博客"
+    :visible.sync="editBlogDialogVisible"
+    width="800px"
+    >
+        <el-form>
+          <el-row>
+            <el-col :span="24">
+              <el-form-tem>
+              <el-input >
+                <template slot="prepend">
+                  <span style="color:#606266;" >文章标题</span>
+                </template>
+              </el-input>
+              </el-form-tem>
+            </el-col>
+          </el-row>
+
+          <el-row>
+            <el-col :span="24">
+              <el-form-tem>
+              <el-input disabled >
+                <template slot="prepend">
+                  <span style="color:#606266;" >文章简介</span>
+                </template>
+              </el-input>
+              </el-form-tem>
+            </el-col>
+          </el-row>
+
+          <el-row>
+            <el-col :span="12">
+              <span style="color: red">*</span><span>分类</span>
+              <el-form-item>
+              <el-select
+                size="mini"
+              ></el-select>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <span style="color: red">*</span><span>标签</span>
+              <el-form-item>
+              <el-select
+                size="mini"
+              ></el-select>
+                </el-form-item>
+            </el-col>
+          </el-row>
+
+          <el-row>
+            <el-col :span="12">
+              <span style="color: red">*</span><span>是否发布</span>
+            </el-col>
+            <el-col :span="12">
+              <span style="color: red">*</span><span>是否原创</span>
+            </el-col>
+          </el-row>
+        </el-form>
+    </el-dialog>
   </div>
 </template>
 
 <script>
   import pageHeader from "../../components/pageHeader";
-  import {getBlogLst,delBlogLst} from "../../api/blog";
+  import {getBlogLst,delBlogLst,delBlogById} from "../../api/blog";
   import {getBlogSortList}  from "../../api/blogSort";
 
   export default {
@@ -114,6 +175,7 @@
     components: {pageHeader},
     data() {
       return {
+        editBlogDialogVisible:false,
         ids:[],
         blogSortOptions:[],
         blogSortList:[],
@@ -125,7 +187,7 @@
           pageSize: null,
           pageNum: null
         },
-        pageSizes:[10,20,50,100],
+        pageSizes:[5,10,20,50,100],
         pageTotal:0,
         pageSize:10,
         currentPage:1,
@@ -133,6 +195,34 @@
       }
     },
     methods:{
+      refreshTable(){
+        this.getBlogList();
+      },
+      toggleSelection(){
+
+        this.$refs.blogListTable.clearSelection();
+      },
+      editRow(row){
+          this.editBlogDialogVisible = true;
+      },
+      deleteRow(row){
+        var param={
+          id:row.pid
+        }
+        delBlogById(param).then(res=>{
+          if (res.data.resCode == "00"){
+            this.$message({
+              type:"success",
+              message:res.data.resMsg
+            });
+          }
+        }).catch(error=>{
+          this.$message({
+            type:"error",
+            message:error
+          })
+        });
+      },
       deleteSelections(){
         var ids = this.ids;
         if (ids.length < 1){
@@ -147,10 +237,16 @@
         }
         delBlogLst(param).then(res => {
           if (res.data.resCode == "00"){
-            alert("seccess")
+            this.$message({
+              type:"success",
+              message:res.data.resMsg
+            });
           }
         }).catch(error=>{
-          alert(error)
+          this.$message({
+            type:"error",
+            message:error
+          })
         })
       },
       selectionChange(selection){
@@ -159,7 +255,6 @@
           let item = selection[index];
           this.ids.push(item.pid);
         }
-        console.log(this.ids)
       },
       blogSortSelected(select){
         var blogSort = {
@@ -170,6 +265,9 @@
       },
        searchBlog(){
          this.getBlogList();
+      },
+      toAddBlogPage(){
+        this.$router.push("/blog/add");
       },
       getBlogList: function(){
         this.blogQuery.pageSize = this.pageSize;

@@ -27,3 +27,11 @@ export function delBlogLst(param) {
   })
 }
 
+export function delBlogById(param) {
+
+  return request({
+    url: process.env.GATEWAY_API + 'admin-api/blog/delete/one',
+    method: "post",
+    params: param
+  })
+}
