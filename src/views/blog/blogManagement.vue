@@ -7,7 +7,8 @@
           <el-col :span="9">
             <el-button @click="toAddBlogPage" size="mini" type="primary"><i class="el-icon-plus"></i>新增</el-button>
             <el-button disabled size="mini" type="primary" plain><i class="el-icon-edit"></i>编辑</el-button>
-            <el-button size="mini" type="danger" plain @click="deleteSelections"><i class="el-icon-delete" ></i>删除</el-button>
+            <el-button size="mini" type="danger" plain @click="deleteSelections"><i class="el-icon-delete"></i>删除
+            </el-button>
             <el-button @click="refreshTable" size="mini"><i class="el-icon-refresh"></i>刷新</el-button>
           </el-col>
           <el-col :span="4">
@@ -54,27 +55,31 @@
             <el-table-column prop="title" show-overflow-tooltip fixed header-align="center" label="文章标题"
                              width="245"></el-table-column>
             <el-table-column prop="author" label="文章作者" width="100" header-align="center"></el-table-column>
-            <el-table-column prop="createTime" show-overflow-tooltip label="创建时间" width="100" header-align="center"></el-table-column>
-            <el-table-column prop="updateTime" show-overflow-tooltip label="最后编辑时间" width="150" header-align="center"></el-table-column>
-            <el-table-column prop="publicTime" show-overflow-tooltip label="发布时间" width="100" header-align="center"></el-table-column>
-            <el-table-column  label="文章分类" width="140" header-align="center">
-                  <template slot-scope="scope">
-                      <el-select disabled  placeholder="无数据"  v-model="blogList[scope.$index].blogSort == null?'':blogList[scope.$index].blogSort.pid">
-                        <el-option
-                          v-for="item in blogSortOptions"
-                          :key="item.pid"
-                          :label="item.typeName"
-                          :value="item.pid"
-                        >
-                        </el-option>
-                      </el-select>
-                  </template>
+            <el-table-column prop="createTime" show-overflow-tooltip label="创建时间" width="100"
+                             header-align="center"></el-table-column>
+            <el-table-column prop="updateTime" show-overflow-tooltip label="最后编辑时间" width="150"
+                             header-align="center"></el-table-column>
+            <el-table-column prop="publicTime" show-overflow-tooltip label="发布时间" width="100"
+                             header-align="center"></el-table-column>
+            <el-table-column label="文章分类" width="140" header-align="center">
+              <template slot-scope="scope">
+                <el-select disabled placeholder="无数据"
+                           v-model="blogList[scope.$index].blogSort == null?'':blogList[scope.$index].blogSort.pid">
+                  <el-option
+                    v-for="item in blogSortOptions"
+                    :key="item.pid"
+                    :label="item.typeName"
+                    :value="item.pid"
+                  >
+                  </el-option>
+                </el-select>
+              </template>
             </el-table-column>
             <el-table-column prop="ifPublish" label="是否发布" width="100" header-align="center">
-                <template slot-scope="scope">
-                  <el-tag type="success" v-if="scope.row.ifPublish == '1'">已发布</el-tag>
-                  <el-tag type="danger" v-else>未发布</el-tag>
-                </template>
+              <template slot-scope="scope">
+                <el-tag type="success" v-if="scope.row.ifPublish == '1'">已发布</el-tag>
+                <el-tag type="danger" v-else>未发布</el-tag>
+              </template>
             </el-table-column>
             <el-table-column label="操作" width="270" fixed="right" header-align="center">
               <template slot-scope="scope">
@@ -104,175 +109,196 @@
     </el-container>
 
     <el-dialog
-    title="编辑博客"
-    :visible.sync="editBlogDialogVisible"
-    width="800px"
+      title="编辑博客"
+      :visible.sync="editBlogDialogVisible"
+      width="800px"
+      center
     >
-        <el-form>
-          <el-row>
-            <el-col :span="24">
-              <el-form-tem>
-              <el-input >
+      <el-form>
+        <el-row>
+          <el-col :span="24">
+            <el-form-item prop="wzjj">
+              <el-input v-model="editBlogData.title">
                 <template slot="prepend">
-                  <span style="color:#606266;" >文章标题</span>
+                  <span style="color:#606266;">文章标题</span>
                 </template>
               </el-input>
-              </el-form-tem>
-            </el-col>
-          </el-row>
+            </el-form-item>
+          </el-col>
+        </el-row>
 
-          <el-row>
-            <el-col :span="24">
-              <el-form-tem>
-              <el-input disabled >
+        <el-row>
+          <el-col :span="24">
+            <el-form-item prop="wzjj">
+              <el-input disabled>
                 <template slot="prepend">
-                  <span style="color:#606266;" >文章简介</span>
+                  <span style="color:#606266;">文章简介</span>
                 </template>
               </el-input>
-              </el-form-tem>
-            </el-col>
-          </el-row>
+            </el-form-item>
+          </el-col>
+        </el-row>
 
-          <el-row>
-            <el-col :span="12">
+        <el-row>
+          <el-col :span="12">
+            <el-form-item>
               <span style="color: red">*</span><span>分类</span>
-              <el-form-item>
-              <el-select
+              <!--<el-select
                 size="mini"
-              ></el-select>
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
+              ></el-select>-->
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item>
               <span style="color: red">*</span><span>标签</span>
-              <el-form-item>
-              <el-select
+              <!--<el-select
                 size="mini"
-              ></el-select>
-                </el-form-item>
-            </el-col>
-          </el-row>
+              ></el-select>-->
+            </el-form-item>
+          </el-col>
+        </el-row>
 
-          <el-row>
-            <el-col :span="12">
-              <span style="color: red">*</span><span>是否发布</span>
-            </el-col>
-            <el-col :span="12">
-              <span style="color: red">*</span><span>是否原创</span>
-            </el-col>
-          </el-row>
-        </el-form>
+        <el-row>
+          <el-col :span="12">
+            <span style="color: red">*</span><span>是否发布</span>
+            <el-radio size="mini" style="background-color: white" v-model="editBlogData" label="1" border>发布</el-radio>
+            <el-radio size="mini" style="background-color: white" v-model="editBlogData" label="0" border>未发布</el-radio>
+          </el-col>
+          <el-col :span="12">
+            <span style="color: red">*</span><span>是否原创</span>
+            <el-radio size="mini" style="background-color: white" v-model="editBlogData" label="1" border>原创</el-radio>
+            <el-radio size="mini" style="background-color: white" v-model="editBlogData" label="0" border>转载</el-radio>
+          </el-col>
+        </el-row>
+
+        <el-row>
+          <CKEditor ref="ckeditor" :content="this.editBlogData.content"></CKEditor>
+        </el-row>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+    <el-button @click="editBlogDialogVisible = false">取 消</el-button>
+    <el-button type="primary" @click="editBlogDialogVisible = false">确 定</el-button>
+  </span>
     </el-dialog>
   </div>
 </template>
 
 <script>
   import pageHeader from "../../components/pageHeader";
-  import {getBlogLst,delBlogLst,delBlogById} from "../../api/blog";
-  import {getBlogSortList}  from "../../api/blogSort";
+  import {getBlogLst, delBlogLst, delBlogById} from "../../api/blog";
+  import {getBlogSortList} from "../../api/blogSort";
+  import CKEditor from "../../components/CKEditor";
 
   export default {
     name: "blogManagement",
-    components: {pageHeader},
+    components: {pageHeader, CKEditor},
     data() {
       return {
-        editBlogDialogVisible:false,
-        ids:[],
-        blogSortOptions:[],
-        blogSortList:[],
+        editBlogDialogVisible: false,
+        editBlogData: {},
+        ids: [],
+        blogSortOptions: [],
+        blogSortList: [],
         headerText: "文章管理|",
         blogList: [],
-        blogQuery:{
-          title:"",
-          blogSort:{},
+        blogQuery: {
+          title: "",
+          blogSort: {},
           pageSize: null,
           pageNum: null
         },
-        pageSizes:[5,10,20,50,100],
-        pageTotal:0,
-        pageSize:10,
-        currentPage:1,
-        loading:true
+        pageSizes: [5, 10, 20, 50, 100],
+        pageTotal: 0,
+        pageSize: 10,
+        currentPage: 1,
+        loading: true
       }
     },
-    methods:{
-      refreshTable(){
+    methods: {
+      refreshTable() {
         this.getBlogList();
       },
-      toggleSelection(){
+      toggleSelection() {
 
         this.$refs.blogListTable.clearSelection();
       },
-      editRow(row){
-          this.editBlogDialogVisible = true;
-      },
-      deleteRow(row){
-        var param={
-          id:row.pid
+      editRow(row) {
+        this.editBlogDialogVisible = true;
+        var temp={};
+        for (var key in row){
+           temp[key] = row[key];
         }
-        delBlogById(param).then(res=>{
-          if (res.data.resCode == "00"){
+        this.editBlogData = temp;
+
+      },
+      deleteRow(row) {
+        var param = {
+          id: row.pid
+        }
+        delBlogById(param).then(res => {
+          if (res.data.resCode == "00") {
             this.$message({
-              type:"success",
-              message:res.data.resMsg
+              type: "success",
+              message: res.data.resMsg
             });
           }
-        }).catch(error=>{
+        }).catch(error => {
           this.$message({
-            type:"error",
-            message:error
+            type: "error",
+            message: error
           })
         });
       },
-      deleteSelections(){
+      deleteSelections() {
         var ids = this.ids;
-        if (ids.length < 1){
+        if (ids.length < 1) {
           this.$message({
-            type:"warning",
-            message:"选择要删除的行"
+            type: "warning",
+            message: "选择要删除的行"
           });
           return
         }
-        var param ={
-          ids:ids+''
+        var param = {
+          ids: ids + ''
         }
         delBlogLst(param).then(res => {
-          if (res.data.resCode == "00"){
+          if (res.data.resCode == "00") {
             this.$message({
-              type:"success",
-              message:res.data.resMsg
+              type: "success",
+              message: res.data.resMsg
             });
           }
-        }).catch(error=>{
+        }).catch(error => {
           this.$message({
-            type:"error",
-            message:error
+            type: "error",
+            message: error
           })
         })
       },
-      selectionChange(selection){
-        this.ids=[];
-        for (var index in selection){
+      selectionChange(selection) {
+        this.ids = [];
+        for (var index in selection) {
           let item = selection[index];
           this.ids.push(item.pid);
         }
       },
-      blogSortSelected(select){
+      blogSortSelected(select) {
         var blogSort = {
-          pid:select
+          pid: select
         };
         this.blogQuery.blogSort = blogSort;
         this.getBlogList();
       },
-       searchBlog(){
-         this.getBlogList();
+      searchBlog() {
+        this.getBlogList();
       },
-      toAddBlogPage(){
+      toAddBlogPage() {
         this.$router.push("/blog/add");
       },
-      getBlogList: function(){
+      getBlogList: function () {
         this.blogQuery.pageSize = this.pageSize;
         this.blogQuery.pageNum = this.currentPage;
-        getBlogLst(this.blogQuery).then(response =>{
+        getBlogLst(this.blogQuery).then(response => {
           if (response.data.resCode == "00") {
             this.loading = false;
             var page = response.data.page;
@@ -281,8 +307,8 @@
             this.pageSize = page.pageSize;
             this.currentPage = page.pageNum;
           }
-        }).catch(error =>{
-          this.loading=false;
+        }).catch(error => {
+          this.loading = false;
           this.$message({
             type: "error",
             message: error
@@ -290,30 +316,30 @@
         });
 
       },
-      getAllBlogSort(){
-            getBlogSortList().then(httpResult =>{
-              if (httpResult.data.resCode == "00") {
-                var resData = httpResult.data.response;
-                this.blogSortOptions = resData;
-              }
-            }).catch(error =>{
-              this.loading=false;
-              this.$message({
-                type: "error",
-                message: error
-              });
-            });
+      getAllBlogSort() {
+        getBlogSortList().then(httpResult => {
+          if (httpResult.data.resCode == "00") {
+            var resData = httpResult.data.response;
+            this.blogSortOptions = resData;
+          }
+        }).catch(error => {
+          this.loading = false;
+          this.$message({
+            type: "error",
+            message: error
+          });
+        });
       },
       handleCurrentChange: function (val) {
         this.currentPage = val;
         this.getBlogList();
       },
-      handleSizeChange:function (val) {
+      handleSizeChange: function (val) {
         this.pageSize = val;
         this.getBlogList();
       }
     },
-    created(){
+    created() {
       this.getAllBlogSort();
       this.getBlogList();
     }
@@ -328,9 +354,11 @@
     background-color: ghostwhite;
     box-shadow: 5px 5px 3px white, 0 0 3px 0 whitesmoke;
   }
-.loadingWrapper{
-  margin-top: 20px;
-}
+
+  .loadingWrapper {
+    margin-top: 20px;
+  }
+
   .promptText {
     font-family: "微软雅黑";
     font-size: small;

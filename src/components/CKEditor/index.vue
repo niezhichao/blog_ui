@@ -13,7 +13,7 @@
 <script>
   import CKEditor from '@ckeditor/ckeditor5-build-decoupled-document'
     export default {
-      props:[""],
+      props:["content"],
         data(){
           return {
             editor: null
@@ -32,6 +32,7 @@
             const toolbarContainer = document.querySelector('#toolbar-container');
             toolbarContainer.appendChild(editor.ui.view.toolbar.element);
             this.editor = editor //将编辑器保存起来，用来随时获取编辑器中的内容等，执行一些操作
+            this.editor.setData(this.content);
           }).catch(error => {
             console.error(error);
           });
@@ -39,6 +40,9 @@
         },
         getData: function () {
            return this.editor.getData();
+        },
+        setData:function (val) {
+          this.editor.setData(val);
         }
       }
     }
@@ -48,6 +52,7 @@
 
   #editor{
     background-color: white;
-    height: 245px
+    height: 245px;
+    border: solid 1px;
   }
 </style>
