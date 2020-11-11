@@ -63,8 +63,8 @@
         <el-row>
           <el-col :span="6" >
                <span style="color: red">*</span><span>是否原创</span>
-               <el-radio size="mini" style="background-color: white" v-model="blogInfo.ifOriginal"  label="1" border>是</el-radio>
-               <el-radio size="mini" style="background-color: white" v-model="blogInfo.ifOriginal"  label="0" border>否</el-radio>
+               <el-radio size="mini"  v-model="blogInfo.ifOriginal"  label="1" >原创</el-radio>
+               <el-radio size="mini"  v-model="blogInfo.ifOriginal"  label="0" >转载</el-radio>
           </el-col>
         </el-row>
 
@@ -97,7 +97,7 @@
           return {
             headerText: "文章发布|",
             blogInfo:{
-              ifOriginal:null,
+              ifOriginal:"1",
               title: null,
               author: null,
               blogSort: {},

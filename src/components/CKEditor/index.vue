@@ -32,7 +32,9 @@
             const toolbarContainer = document.querySelector('#toolbar-container');
             toolbarContainer.appendChild(editor.ui.view.toolbar.element);
             this.editor = editor //将编辑器保存起来，用来随时获取编辑器中的内容等，执行一些操作
-            this.editor.setData(this.content);
+            if (this.content != "" && this.content != null && this.content!=undefined){
+              this.editor.setData(this.content);
+            }
           }).catch(error => {
             console.error(error);
           });

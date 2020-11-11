@@ -143,17 +143,45 @@
           <el-col :span="12">
             <el-form-item>
               <span style="color: red">*</span><span>分类</span>
-              <!--<el-select
+              <el-select
+                @change="changeBlogSortOfEdit"
+               v-model="editBlogData.blogSort.pid"
                 size="mini"
-              ></el-select>-->
+               clearable
+              >
+              <el-option
+                v-for="(item,index) in blogSortOptions"
+                :key="index"
+                :label="item.typeName"
+                :value="item.pid"
+              >
+              </el-option>
+
+            </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item>
               <span style="color: red">*</span><span>标签</span>
-              <!--<el-select
-                size="mini"
-              ></el-select>-->
+              <el-tag
+                v-for="(item,index) in editBlogData.tags"
+                :key="item.pid"
+                closable
+                @close="handleTagClose"
+              >
+                {{item.tagContent}}
+              </el-tag>
+              <el-dropdown @command="handleArtTag">
+                <el-button round size="small"  style="border-color: rgba(145,157,198,0.49);">
+                  <i class="el-icon-plus" style="color: #1f2d3d"></i>
+                  <span>文章标签</span>
+                </el-button>
+                <el-dropdown-menu slot="dropdown" size="medium" >
+                  <template v-for="(item,index) in artTags">
+                    <el-dropdown-item :command="index" >{{item.tagContent}}</el-dropdown-item>
+                  </template>
+                </el-dropdown-menu>
+              </el-dropdown>
             </el-form-item>
           </el-col>
         </el-row>
@@ -161,19 +189,20 @@
         <el-row>
           <el-col :span="12">
             <span style="color: red">*</span><span>是否发布</span>
-            <el-radio size="mini" style="background-color: white" v-model="editBlogData" label="1" border>发布</el-radio>
-            <el-radio size="mini" style="background-color: white" v-model="editBlogData" label="0" border>未发布</el-radio>
+            <el-radio size="mini"  v-model="editBlogData.ifPublish" label="1" >发布</el-radio>
+            <el-radio size="mini"  v-model="editBlogData.ifPublish" label="0" >未发布</el-radio>
           </el-col>
           <el-col :span="12">
             <span style="color: red">*</span><span>是否原创</span>
-            <el-radio size="mini" style="background-color: white" v-model="editBlogData" label="1" border>原创</el-radio>
-            <el-radio size="mini" style="background-color: white" v-model="editBlogData" label="0" border>转载</el-radio>
+            <el-radio size="mini"  v-model="editBlogData.ifOriginal" label="1" >原创</el-radio>
+            <el-radio size="mini"  v-model="editBlogData.ifOriginal" label="0" >转载</el-radio>
           </el-col>
         </el-row>
 
         <el-row>
           <CKEditor ref="ckeditor" :content="this.editBlogData.content"></CKEditor>
         </el-row>
+
       </el-form>
       <span slot="footer" class="dialog-footer">
     <el-button @click="editBlogDialogVisible = false">取 消</el-button>
@@ -187,6 +216,7 @@
   import pageHeader from "../../components/pageHeader";
   import {getBlogLst, delBlogLst, delBlogById} from "../../api/blog";
   import {getBlogSortList} from "../../api/blogSort";
+  import {getTagList} from "../../api/tag";
   import CKEditor from "../../components/CKEditor";
 
   export default {
@@ -195,12 +225,15 @@
     data() {
       return {
         editBlogDialogVisible: false,
-        editBlogData: {},
+        editBlogData: {
+          blogSort:{}
+        },
         ids: [],
         blogSortOptions: [],
         blogSortList: [],
         headerText: "文章管理|",
         blogList: [],
+        artTags:[],
         blogQuery: {
           title: "",
           blogSort: {},
@@ -215,6 +248,27 @@
       }
     },
     methods: {
+      handleArtTag:function (command) {
+        var that = this;
+        var item = that.artTags[command];
+        var tagsArr = that.editBlogData.tags;
+        if (tagsArr.some(val=> val.pid == item.pid))return //重复选择的标签 不新增
+        item = {
+          pid:item.pid,
+          tagContent: item.tagContent
+        }
+        that.editBlogData.tags.push(item);
+      },
+      handleTagClose:function(tag){
+        let tags = this.editBlogData.tags;
+        tags.splice(tags.indexOf(tag),1);
+      },
+      changeBlogSortOfEdit(selection){
+        var blogSort = {
+          pid: selection
+        };
+        this.editBlogData.blogSort = blogSort;
+      },
       refreshTable() {
         this.getBlogList();
       },
@@ -224,9 +278,15 @@
       },
       editRow(row) {
         this.editBlogDialogVisible = true;
-        var temp={};
+        let temp={};
         for (var key in row){
            temp[key] = row[key];
+        }
+
+        let blogSort = temp.blogSort;
+
+        if (null == blogSort){//已将editBlogData实例化  不能使对象为null,会导致editBlogData.blogSort.pid 的绑定出错  pid undefined
+          temp.blogSort= {};
         }
         this.editBlogData = temp;
 
@@ -340,8 +400,20 @@
       }
     },
     created() {
+      /*获取标签列表*/
+      getTagList().then(response =>{
+        if (response.data.resCode == "00") {
+          this.artTags = response.data.response;
+        }
+      }).catch(error =>{
+        this.$message({
+          type: "error",
+          message: error
+        });
+      });
       this.getAllBlogSort();
       this.getBlogList();
+
     }
   }
 </script>
