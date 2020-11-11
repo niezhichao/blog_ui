@@ -35,3 +35,12 @@ export function delBlogById(param) {
     params: param
   })
 }
+
+export function updateBlog(param) {
+
+  return request({
+    url: process.env.GATEWAY_API + 'admin-api/blog/update',
+    method: "post",
+    data: param
+  })
+}

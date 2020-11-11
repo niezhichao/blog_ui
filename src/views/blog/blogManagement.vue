@@ -206,7 +206,7 @@
       </el-form>
       <span slot="footer" class="dialog-footer">
     <el-button @click="editBlogDialogVisible = false">取 消</el-button>
-    <el-button type="primary" @click="editBlogDialogVisible = false">确 定</el-button>
+    <el-button type="primary" @click="editDataCommit">确 定</el-button>
   </span>
     </el-dialog>
   </div>
@@ -214,7 +214,7 @@
 
 <script>
   import pageHeader from "../../components/pageHeader";
-  import {getBlogLst, delBlogLst, delBlogById} from "../../api/blog";
+  import {getBlogLst, delBlogLst, delBlogById,updateBlog} from "../../api/blog";
   import {getBlogSortList} from "../../api/blogSort";
   import {getTagList} from "../../api/tag";
   import CKEditor from "../../components/CKEditor";
@@ -248,6 +248,22 @@
       }
     },
     methods: {
+      editDataCommit(){
+
+        updateBlog(this.editBlogData).then(res => {
+          if (res.data.resCode == "00") {
+            this.$message({
+              type: "success",
+              message: res.data.resMsg
+            });
+          }
+        }).catch(error => {
+          this.$message({
+            type: "error",
+            message: error
+          })
+        });
+      },
       handleArtTag:function (command) {
         var that = this;
         var item = that.artTags[command];
@@ -282,12 +298,7 @@
         for (var key in row){
            temp[key] = row[key];
         }
-
-        let blogSort = temp.blogSort;
-
-        if (null == blogSort){//已将editBlogData实例化  不能使对象为null,会导致editBlogData.blogSort.pid 的绑定出错  pid undefined
-          temp.blogSort= {};
-        }
+        this.editBlogSortId = temp.blogSort.pid;
         this.editBlogData = temp;
 
       },

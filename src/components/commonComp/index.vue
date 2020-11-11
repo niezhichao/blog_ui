@@ -61,10 +61,10 @@
       `
       <el-form :model="editData" ref="editDataForm" :rules="rules">
         <el-row v-for="(item,index) in tableCols" :key="index">
-          <el-col :span="2">
+          <el-col :span="3">
             <div class="prefix_input"><span style="color: red">*</span><span>{{item.label}}</span></div>
           </el-col>
-          <el-col :span="22">
+          <el-col :span="21">
             <el-form-item :prop="item.prop">
               <el-input v-model="editData[item.prop]"></el-input>
             </el-form-item>
@@ -170,6 +170,10 @@
     margin-top: 20px;
     min-height: 36px;
     background-color: #F56C6C;
+  }
+
+  .prefix_input{
+    margin-top: 5px;
   }
 
   .overTableInfo {
