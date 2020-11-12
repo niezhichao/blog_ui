@@ -3,7 +3,7 @@
     <page-header :headerText="headerText"></page-header>
     <el-container>
       <el-header>
-        <el-row :gutter="3">
+        <el-row :gutter="3" class="mainRow">
           <el-col :span="9">
             <el-button @click="toAddBlogPage" size="mini" type="primary"><i class="el-icon-plus"></i>新增</el-button>
             <el-button disabled size="mini" type="primary" plain><i class="el-icon-edit"></i>编辑</el-button>
@@ -33,7 +33,7 @@
             <el-button size="mini" type="primary" icon="el-icon-search" @click="searchBlog">搜索</el-button>
           </el-col>
         </el-row>
-        <el-row>
+        <el-row class="mainRow">
           <el-col :span="12">
             <i class="el-icon-info" style="color: #409eff"></i><span class="promptText">当前表格已选择</span><span
             class="spectialText">{{this.ids.length}}</span><span class="promptText">项</span><span
@@ -140,6 +140,30 @@
         </el-row>
 
         <el-row>
+          <el-col :span="24">
+            <el-form-item prop="wzjj" >
+              <el-input v-model="editBlogData.author" :disabled="disabledChange">
+                <template slot="prepend">
+                  <span style="color:#606266;">文章作者</span>
+                </template>
+              </el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+        <el-row>
+          <el-col :span="24">
+            <el-form-item prop="wzjj" >
+              <el-input v-model="editBlogData.articlesQuoted" :disabled="disabledChange">
+                <template slot="prepend">
+                  <span style="color:#606266;">文章来源</span>
+                </template>
+              </el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+        <el-row>
           <el-col :span="12">
             <el-form-item>
               <span style="color: red">*</span><span>分类</span>
@@ -194,8 +218,8 @@
           </el-col>
           <el-col :span="12">
             <span style="color: red">*</span><span>是否原创</span>
-            <el-radio size="mini"  v-model="editBlogData.ifOriginal" label="1" >原创</el-radio>
-            <el-radio size="mini"  v-model="editBlogData.ifOriginal" label="0" >转载</el-radio>
+            <el-radio size="mini"  v-model="editBlogData.ifOriginal" label="1" @change="radioChange">原创</el-radio>
+            <el-radio size="mini"  v-model="editBlogData.ifOriginal" label="0" @change="radioChange">转载</el-radio>
           </el-col>
         </el-row>
 
@@ -205,7 +229,7 @@
 
       </el-form>
       <span slot="footer" class="dialog-footer">
-    <el-button @click="editBlogDialogVisible = false">取 消</el-button>
+    <el-button @click="editBlogDialogVisible = false">关闭</el-button>
     <el-button type="primary" @click="editDataCommit">确 定</el-button>
   </span>
     </el-dialog>
@@ -224,6 +248,7 @@
     components: {pageHeader, CKEditor},
     data() {
       return {
+        disabledChange:true,
         editBlogDialogVisible: false,
         editBlogData: {
           blogSort:{}
@@ -248,8 +273,14 @@
       }
     },
     methods: {
+      radioChange(val){
+        if ("1" == val){
+          this.disabledChange = true;
+          return
+        }
+        this.disabledChange = false;
+      },
       editDataCommit(){
-
         updateBlog(this.editBlogData).then(res => {
           if (res.data.resCode == "00") {
             this.$message({
@@ -294,11 +325,19 @@
       },
       editRow(row) {
         this.editBlogDialogVisible = true;
+        if ("0" == row.ifOriginal){
+          this.disabledChange = false;
+        }else{
+          this.disabledChange = true;
+        }
         let temp={};
         for (var key in row){
            temp[key] = row[key];
         }
-        this.editBlogSortId = temp.blogSort.pid;
+        let blogSort= temp.blogSort;
+        if (null == blogSort){
+          temp.blogSort={};
+        }
         this.editBlogData = temp;
 
       },
@@ -385,7 +424,6 @@
             message: error
           });
         });
-
       },
       getAllBlogSort() {
         getBlogSortList().then(httpResult => {
@@ -456,7 +494,7 @@
     cursor: pointer;
   }
 
-  .el-row {
+  .mainRow {
     margin-top: 20px;
   }
 </style>

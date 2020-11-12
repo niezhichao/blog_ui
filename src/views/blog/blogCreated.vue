@@ -11,7 +11,7 @@
               </el-input>
             </el-col>
           <el-col :span="10">
-            <el-input v-model="blogInfo.author">
+            <el-input v-model="blogInfo.author" :disabled="disabledChange">
               <template slot="prepend">
                 <span style="color:#606266">文章作者</span>
               </template>
@@ -52,7 +52,7 @@
             </el-dropdown>
           </el-col>
           <el-col :span="10">
-            <el-input v-model="blogInfo.articlesQuoted">
+            <el-input v-model="blogInfo.articlesQuoted" :disabled="disabledChange">
               <template slot="prepend">
                 <span style="color:#606266 ">文章来源</span>
               </template>
@@ -63,8 +63,8 @@
         <el-row>
           <el-col :span="6" >
                <span style="color: red">*</span><span>是否原创</span>
-               <el-radio size="mini"  v-model="blogInfo.ifOriginal"  label="1" >原创</el-radio>
-               <el-radio size="mini"  v-model="blogInfo.ifOriginal"  label="0" >转载</el-radio>
+               <el-radio size="mini"  v-model="blogInfo.ifOriginal" @change="redioChange"  label="1" >原创</el-radio>
+               <el-radio size="mini"  v-model="blogInfo.ifOriginal"  label="0" @change="redioChange" >转载</el-radio>
           </el-col>
         </el-row>
 
@@ -96,6 +96,7 @@
       data(){
           return {
             headerText: "文章发布|",
+            disabledChange:true,
             blogInfo:{
               ifOriginal:"1",
               title: null,
@@ -112,6 +113,13 @@
           }
       },
       methods:{
+        redioChange(val){
+          if ("1" == val){
+            this.disabledChange = true;
+            return
+          }
+          this.disabledChange = false;
+        },
         handleArtTag:function (command) {
           var that = this;
           var item = that.artTags[command];
