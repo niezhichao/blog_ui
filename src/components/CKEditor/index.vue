@@ -16,7 +16,7 @@
       props:["content"],
         data(){
           return {
-            editor: null
+            editor: null,
           }
         },
       mounted(){
@@ -35,6 +35,11 @@
             if (this.content != "" && this.content != null && this.content!=undefined){
               this.editor.setData(this.content);
             }
+            var that = this;
+            // 监听内容改变 通知父组件
+            this.editor.model.document.on('change:data', function(v,v1) {
+             that.contentChange();
+            });
           }).catch(error => {
             console.error(error);
           });
@@ -45,7 +50,13 @@
         },
         setData:function (val) {
           this.editor.setData(val);
+        },
+        contentChange(){
+          this.$emit("content-change","");
         }
+      },
+      watch:{
+
       }
     }
 </script>

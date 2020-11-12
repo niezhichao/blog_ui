@@ -224,7 +224,7 @@
         </el-row>
 
         <el-row>
-          <CKEditor ref="ckeditor" :content="this.editBlogData.content"></CKEditor>
+          <CKEditor ref="ckeditor" @content-change="eiditorChange"  :content="editBlogData.content"></CKEditor>
         </el-row>
 
       </el-form>
@@ -273,6 +273,9 @@
       }
     },
     methods: {
+      eiditorChange(val){//子组件通知内容改变
+        this.editBlogData.content= this.$refs.ckeditor.getData();
+      },
       radioChange(val){
         if ("1" == val){
           this.disabledChange = true;
@@ -324,6 +327,7 @@
         this.$refs.blogListTable.clearSelection();
       },
       editRow(row) {
+        console.log(row)
         this.editBlogDialogVisible = true;
         if ("0" == row.ifOriginal){
           this.disabledChange = false;
